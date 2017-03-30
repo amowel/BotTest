@@ -1,11 +1,16 @@
 package com.weblab.vk;
 
 import com.amazonaws.services.polly.model.OutputFormat;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
 import com.weblab.service.PollyService;
 import com.weblab.vk.model.Message;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -21,6 +26,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -28,6 +36,7 @@ import java.util.Random;
  * Created by amowel on 18.03.17.
  */
 @Service
+@Slf4j
 public class VkService {
 
     @Autowired
@@ -46,12 +55,18 @@ public class VkService {
         this.vk = vkApiClient;
         this.objectMapper = new ObjectMapper();
     }
-
-    public void send(String json) {
+    public void sendMessage(Message message) throws ClientException, ApiException {
+        vk.messages()
+                .send(vkProvider.getServiceActor())
+                .message(message.getBody())
+                .userId(message.getUserId())
+                .forwardMessages(String.valueOf(message.getId()))
+                .execute();
+    }
+    public void sendAudio(Message message) {
         try {
-
+            
             RestTemplate restTemplate = new RestTemplate();
-            Message message = parseMessage(json);
             ResponseEntity<String> uploadResponse = restTemplate.getForEntity(rawUrl(),String.class);
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(objectMapper.readValue(uploadResponse.getBody(),JsonNode.class).get("response")
@@ -62,29 +77,44 @@ public class VkService {
             httpPost.setEntity(reqEntity);
             HttpResponse response = httpclient.execute(httpPost);
             String file = IOUtils.toString(response.getEntity().getContent());
-            System.out.println(response);
+            HttpResponse lul=null;
             JsonNode jsonNode = objectMapper.readValue(file, JsonNode.class);
-            System.out.println(file);
            ResponseEntity<String> document = restTemplate.getForEntity("https://api.vk.com/method/docs.save?file="+ objectMapper.readValue(file,JsonNode.class).get("file").asText()+"&access_token="+vkProvider.getUserAccessToken()+"&v=5.60",String.class);
             JsonNode audio = objectMapper.readValue(document.getBody(), JsonNode.class);
-            System.out.println(audio);
-            System.out.println("Service Actor->"+vkProvider.getServiceActor());
-            System.out.println("User id->"+message.getUserId());
-            System.out.println("doc" + audio.get("response").get(0).get("owner_id").asText() + "_" + audio.get("response").get(0).get("id").asInt());
             vk.messages().send(vkProvider.getServiceActor()).userId(message.getUserId())
                     .attachment("doc" + audio.get("response").get(0).get("owner_id").asText() + "_" + audio.get("response").get(0).get("id").asInt()).execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private Message parseMessage(String json) {
+    public Message parseMessage(String json) throws IOException {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+        String value = ""+(objectMapper
+                .readValue(json,JsonNode.class).get("object"));
+         com.vk.api.sdk.objects.messages.Message Message = objectMapper.readValue( value
+                ,com.vk.api.sdk.objects.messages.Message.class);
         Message message = new Message();
         try {
             JsonNode jsonNode = objectMapper.readValue(json, JsonNode.class);
             message.setBody(jsonNode.get("object").get("body").asText());
             message.setUserId(jsonNode.get("object").get("user_id").asInt());
             message.setGroupId(jsonNode.get("group_id").asInt());
-
+            if(jsonNode.get("object").get("attachments")!=null)
+            message.getAttachment().add(new URL(jsonNode.get("object").get("attachments").get(0).get("photo_604").asText()));
+            if(jsonNode.get("object").get("fwd_messages")!=null) {
+                jsonNode = jsonNode.get("object").get("fwd_messages").get(0);
+                Message innerMessage = new Message();
+                log.error(jsonNode.asText());
+                if (jsonNode.get("body") != null)
+                    innerMessage.setBody(jsonNode.get("body").asText());
+                innerMessage.setUserId(jsonNode.get("user_id").asInt());
+                log.error(jsonNode.get("attachments").get(0).get("photo").asText());
+                log.error(jsonNode.get("attachments").get(0).get("photo").get("photo_604").asText());
+                innerMessage.getAttachment().add(new URL(jsonNode.get("attachments").get(0).get("photo").get("photo_604").asText()));
+                log.error(innerMessage.toString());
+                message.getMessages().add(innerMessage);
+                log.error(message.toString());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

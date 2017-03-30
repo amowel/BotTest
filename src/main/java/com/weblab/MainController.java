@@ -1,14 +1,16 @@
 package com.weblab;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import com.weblab.model.UserConnection;
+import com.weblab.service.InstagramService;
 import com.weblab.service.UserServiceImpl;
 import com.weblab.service.EmailServiceWrapper;
 import com.weblab.service.PollyService;
 import com.weblab.vk.VkService;
+import com.weblab.vk.model.Message;
 import javazoom.jl.decoder.JavaLayerException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,9 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-
+import java.text.MessageFormat;
+import java.util.Arrays;
+@Slf4j
 @Controller
 @CrossOrigin
 public class MainController {
@@ -37,6 +41,8 @@ public class MainController {
     @Autowired
     private UserServiceImpl userDetailService;
     @Autowired
+    InstagramService instagramService;
+    @Autowired
     private PollyService pollyService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -47,9 +53,36 @@ public class MainController {
 
     @RequestMapping(value = "/vk", method = RequestMethod.POST, consumes = {"application/json"})
     @ResponseBody
-    public ResponseEntity<String> vk(@RequestBody String json) throws IOException {
-        if(new ObjectMapper().readValue(json, JsonNode.class).get("object").get("body").asText().length()<1000)
-                vk.send(json);
+    public ResponseEntity<String> vk(@RequestBody String json) throws IOException, ClientException, ApiException {
+        log.error(json);
+
+        Message message = vk.parseMessage(json);
+        if(message.getBody().startsWith("/inst auth"))
+        {
+            String body = message.getBody();
+            String[] credentials=body.replace("/inst auth ","").split(" ");
+            log.error(Arrays.deepToString(credentials));
+            instagramService.authorize(
+                   new UserConnection(
+                    (long)message.getUserId(),
+                    credentials[0],
+                    credentials[1]
+
+            ));
+            return new ResponseEntity<String>("ok", HttpStatus.OK);
+        }
+       else if(message.getBody().startsWith("/inst post "))
+        {
+            String body = message.getBody().replace("/inst post ","");
+            message.setBody(body);
+            instagramService.post(message);
+        }
+       else if(message.getBody().length()<500)
+                vk.sendAudio(message);
+        else {
+            message.setBody(MessageFormat.format("Максимальна кількість символів 500. Ви ввели {0}",message.getBody().length()));
+            vk.sendMessage(message);
+        }
                 return new ResponseEntity<String>("ok", HttpStatus.OK);
     }
 

@@ -25,6 +25,7 @@ class="org.springframework.jdbc.datasource.DriverManagerDataSource">
    <bean id="userDetailService" class="com.weblab.service.UserServiceImpl">
 
    </bean>
+
     <bean id="emailUtil" class="com.weblab.service.EmailServiceWrapper">
         <constructor-arg name="emailService" ref="defaultEmailService"/>
     </bean>
