@@ -1,4 +1,4 @@
-package com.weblab.service;
+package com.weblab.service.dal;
 
 import com.weblab.model.ExampleUserDetails;
 import com.weblab.model.Role;

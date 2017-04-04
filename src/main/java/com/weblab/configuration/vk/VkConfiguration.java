@@ -1,17 +1,14 @@
-package com.weblab.vk.configuration;
+package com.weblab.configuration.vk;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
-import com.weblab.service.PollyService;
-import com.weblab.vk.model.VkDisplay;
-import com.weblab.vk.model.VkScopeBuilder;
+import com.weblab.service.basic.PollyService;
+import com.weblab.model.vk.model.VkDisplay;
+import com.weblab.model.vk.model.VkScopeBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.web.ConnectController;
 
 /**
  * Created by amowel on 19.03.17.

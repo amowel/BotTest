@@ -1,4 +1,4 @@
-package com.weblab.service;
+package com.weblab.service.dal;
 
 import com.weblab.model.UserConnection;
 import com.weblab.repository.UserConnectionRepository;

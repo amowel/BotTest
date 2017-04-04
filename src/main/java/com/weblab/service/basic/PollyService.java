@@ -1,4 +1,4 @@
-package com.weblab.service;
+package com.weblab.service.basic;
 
 import java.io.*;
 import java.nio.file.Files;

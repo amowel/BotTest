@@ -1,5 +1,7 @@
-package com.weblab.configuration;
+package com.weblab.configuration.basic;
 
+import com.google.gson.Gson;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -40,4 +42,5 @@ public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
 
 
     }
+
 }

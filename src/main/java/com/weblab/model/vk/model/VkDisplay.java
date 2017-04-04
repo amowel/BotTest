@@ -1,6 +1,4 @@
-package com.weblab.vk.model;
-
-import com.vk.api.sdk.client.VkApiClient;
+package com.weblab.model.vk.model;
 
 /**
  * Created by amowel on 18.03.17.

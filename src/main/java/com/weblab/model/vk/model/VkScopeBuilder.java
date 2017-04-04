@@ -1,8 +1,4 @@
-package com.weblab.vk.model;
-
-import com.weblab.model.Role;
-import com.weblab.model.SocialMediaService;
-import com.weblab.model.User;
+package com.weblab.model.vk.model;
 
 /**
  * Created by amowel on 18.03.17.

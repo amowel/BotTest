@@ -1,7 +1,7 @@
-package com.weblab.vk.configuration;
+package com.weblab.configuration.vk;
 
-import com.weblab.vk.model.VkDisplay;
-import com.weblab.vk.model.VkScopeBuilder;
+import com.weblab.model.vk.model.VkDisplay;
+import com.weblab.model.vk.model.VkScopeBuilder;
 
 /**
  * Created by amowel on 18.03.17.

@@ -1,4 +1,4 @@
-package com.weblab.service;
+package com.weblab.service.dal;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;

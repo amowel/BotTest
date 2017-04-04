@@ -1,8 +1,8 @@
-package com.weblab.vk;
+package com.weblab.model.vk;
 
 import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.client.actors.UserActor;
-import com.weblab.vk.configuration.VkAuthHandler;
+import com.weblab.configuration.vk.VkAuthHandler;
 
 
 /**

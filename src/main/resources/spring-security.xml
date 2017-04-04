@@ -1,5 +1,0 @@
-<authentication-manager>
-    <authentication-provider>
-        <password-encoder ref="encoder" />
-    </authentication-provider>
-</authentication-manager>

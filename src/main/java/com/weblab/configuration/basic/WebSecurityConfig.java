@@ -1,6 +1,6 @@
-package com.weblab.configuration;
+package com.weblab.configuration.basic;
 
-import com.weblab.service.UserServiceImpl;
+import com.weblab.service.dal.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.social.security.SpringSocialConfigurer;
 
 /**
  * Created by amowel on 23.02.17.

@@ -1,4 +1,4 @@
-package com.weblab.service;
+package com.weblab.service.basic;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -11,6 +11,7 @@ import javazoom.jl.decoder.JavaLayerException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import javax.mail.internet.InternetAddress;
 import java.io.*;
@@ -18,12 +19,13 @@ import java.io.*;
 /**
  * Created by amowel on 13.03.17.
  */
+@Service
 public class EmailServiceWrapper {
-    final
-    it.ozimov.springboot.mail.service.EmailService emailService;
+
+    private EmailService emailService;
 
     @Autowired
-    public EmailServiceWrapper(it.ozimov.springboot.mail.service.EmailService emailService) {
+    public EmailServiceWrapper(EmailService emailService) {
         this.emailService = emailService;
     }
 
