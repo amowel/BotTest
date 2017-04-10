@@ -1,50 +1,80 @@
 package com.weblab.configuration.vk;
 
 import com.weblab.model.vk.model.VkDisplay;
-import com.weblab.model.vk.model.VkScopeBuilder;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by amowel on 18.03.17.
  */
-
+@Slf4j
+@Data
 public class VkAuthHandler {
-    public VkAuthHandler(String CLIENT_ID, String SECURE_KEY, String SCOPE, String REDIRECT_URI, VkDisplay DISPLAY, String RESPONSE_TYPE, String v, String GROUP_ID) {
 
+    private String clientId;
+    private String secureKey;
+    private String scope;
+    private String redirect_uri;
+    private VkDisplay display = VkDisplay.PAGE;
+    private String responseType;
+    private String version;
+    private String groupId;
+    public VkAuthHandler(String clientId, String secureKey, String scope, String redirect_uri, VkDisplay display, String responseType, String version, String groupId) {
+        this.clientId = clientId;
+        this.secureKey = secureKey;
+        this.scope = scope;
+        this.redirect_uri = redirect_uri;
+        this.display = display;
+        this.responseType = responseType;
+        this.version = version;
+        this.groupId = groupId;
     }
 
-    public static String CLIENT_ID="5935025";
-    public static String SECURE_KEY="NHWj4inx0p5IaYwprUfV";
-    private static String SCOPE=new VkScopeBuilder()
-            .messages()
-            .photos()
-            .docs()
-            .manage()
-            .build();
-    private static String REDIRECT_URI="http://6f84d143.ngrok.io/getcode";
-    private static VkDisplay DISPLAY=VkDisplay.PAGE;
-    private static String RESPONSE_TYPE="code";
-    private static String V="5.62";
-    private static String GROUP_ID="142765838";
+    @PostConstruct
+    public void log() {
+        log.info(this.getAuthUrl());
+    }
 
-    public static final String GROUP_AUTH_URL = "http://oauth.vk.com/authorize?" +
-            "client_id=" + CLIENT_ID +
-            "&scope=" + SCOPE +
-            "&group_ids=" + GROUP_ID +
-            "&redirect_uri=" + REDIRECT_URI +
-            "&display=" + DISPLAY +
-            "&response_type=" + RESPONSE_TYPE +
-            "&v=" + V;
-    public final String AUTH_URL = "http://oauth.vk.com/authorize?" +
-            "client_id=" + CLIENT_ID +
-            "&scope=" + SCOPE +
-            "&redirect_uri=" + REDIRECT_URI +
-            "&display=" + DISPLAY +
-            "&response_type=" + RESPONSE_TYPE +
-            "&v=" + V;
-    public final String TOKEN_URL = "https://oauth.vk.com/access_token?" +
-            "client_id=" + CLIENT_ID +
-            "&client_secret=" + SECURE_KEY +
-            "&redirect_uri=" + REDIRECT_URI +
-            "&code=%s";
+    public String groupAuthUrl() {
+        return "http://oauth.vk.com/authorize?" +
+                "client_id=" + clientId +
+                "&scope=" + scope +
+                "&group_ids=" + groupId +
+                "&redirect_uri=" + redirect_uri +
+                "&display=" + display +
+                "&response_type=" + responseType +
+                "&v=" + version;
+    }
+
+    public String getAuthUrl() {
+        return "http://oauth.vk.com/authorize?" +
+                "client_id=" + clientId +
+                "&scope=" + scope +
+                "&redirect_uri=" + redirect_uri +
+                "&display=" + display +
+                "&response_type=" + responseType +
+                "&v=" + version;
+    }
+
+    public String getTokenUrl() {
+        return "https://oauth.vk.com/access_token?" +
+                "client_id=" + clientId +
+                "&client_secret=" + secureKey +
+                "&redirect_uri=" + redirect_uri +
+                "&code=%s";
+    }
+
+    public String authorize(String code) {
+        RestTemplate restTemplate = new RestTemplate();
+        log.info(String.format(getTokenUrl(), code));
+        ResponseEntity<String> token = restTemplate.getForEntity(String.format(getTokenUrl(), code), String.class);
+        log.info("Token:", token);
+        return token.getBody();
+
+    }
 
 }

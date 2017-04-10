@@ -7,11 +7,13 @@ import lombok.Data;
  */
 @Data
 public class UserRequestsInfo {
-    public UserRequestsInfo(long vkId,int requestCounter){
+    private Long vkId;
+    private int requestCounter;
+
+    public UserRequestsInfo(long vkId, int requestCounter) {
         this.vkId = vkId;
         this.requestCounter = requestCounter;
     }
-    private Long vkId;
-    private int requestCounter;
+
 
 }

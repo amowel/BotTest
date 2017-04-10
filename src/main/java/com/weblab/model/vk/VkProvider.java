@@ -3,14 +3,17 @@ package com.weblab.model.vk;
 import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.weblab.configuration.vk.VkAuthHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
  * Created by macuser on 26.10.16.
  */
 public final class VkProvider {
-    final
-    VkAuthHandler vkAuthHandler;
+
+    @Autowired
+    private VkAuthHandler vkAuthHandler;
+
     public UserActor getUserActor() {
         return userActor;
     }
@@ -40,7 +43,7 @@ public final class VkProvider {
         this.accessToken = accessToken;
         this.userAccessToken=userAccessToken;
 
-        this.serviceActor = new ServiceActor(Integer.valueOf(VkAuthHandler.CLIENT_ID), VkAuthHandler.SECURE_KEY, accessToken);
+        this.serviceActor = new ServiceActor(Integer.valueOf(vkAuthHandler.getClientId()), vkAuthHandler.getSecureKey(), accessToken);
         this.userActor = new UserActor(userId, userAccessToken);
         this.vkAuthHandler = vkAuthHandler;
     }

@@ -9,5 +9,5 @@ import java.util.Objects;
  * Created by amowel on 03.04.17.
  */
 public interface Handler {
-    public void handle(String json);
+    public void handle(String json) throws Exception;
 }

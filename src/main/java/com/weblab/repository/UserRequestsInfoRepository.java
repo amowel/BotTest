@@ -7,7 +7,8 @@ import com.weblab.model.UserRequestsInfo;
  */
 
 public interface UserRequestsInfoRepository {
-    public void saveUserRequestsInfo(UserRequestsInfo userRequestsInfo);
+    public UserRequestsInfo saveUserRequestsInfo(UserRequestsInfo userRequestsInfo);
     public UserRequestsInfo findUserRequestsInfo(int vkId);
     public void updateUserRequestsInfo(UserRequestsInfo userRequestsInfo);
+    public boolean isBanned(Long vkId);
 }

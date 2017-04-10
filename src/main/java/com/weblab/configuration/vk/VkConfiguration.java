@@ -2,13 +2,17 @@ package com.weblab.configuration.vk;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.vk.api.sdk.actions.Messages;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
+import com.weblab.api.MessagesApi;
+import com.weblab.api.VkApiExtended;
 import com.weblab.service.basic.PollyService;
 import com.weblab.model.vk.model.VkDisplay;
 import com.weblab.model.vk.model.VkScopeBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * Created by amowel on 19.03.17.
@@ -18,8 +22,8 @@ public class VkConfiguration {
     @Bean
     public VkAuthHandler vkAuthHandler(){
         return new VkAuthHandler(
-                "5935025",
-                "rW20gm9YBZhHFm9pgdJu",
+                "5901447",
+                "HPR1KEzDcy5ZRtjN9nS5",
                 new VkScopeBuilder()
                 .ads()
                 .audio()
@@ -27,7 +31,6 @@ public class VkConfiguration {
                 .email()
                 .friends()
                 .groups()
-                .messages()
                 .offline()
                 .wall()
                 .notes()
@@ -36,7 +39,7 @@ public class VkConfiguration {
                 .stats()
                 .status()
                 .build(),
-                "http://localhost:8080/getcode",
+                "https://homeless.ngrok.io/generatecode",
                 VkDisplay.PAGE,
                 "code",
                 "5.62",
@@ -45,8 +48,9 @@ public class VkConfiguration {
     }
 
     @Bean
-    public VkApiClient vk(HttpTransportClient httpTransportClient) {
-        return new VkApiClient(httpTransportClient);
+    @Primary
+    public VkApiExtended vk(HttpTransportClient httpTransportClient) {
+        return new VkApiExtended(httpTransportClient);
     }
 
     @Bean
@@ -60,6 +64,10 @@ public class VkConfiguration {
     @Bean
     public Region region(){
         return Region.getRegion(Regions.US_EAST_1);
+    }
+    @Bean
+    Messages MessageApi(VkApiExtended vk){
+        return new MessagesApi(vk);
     }
 
 }

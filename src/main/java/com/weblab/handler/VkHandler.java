@@ -9,6 +9,7 @@ import com.weblab.repository.UserRequestsInfoRepository;
 import com.weblab.service.basic.JsonParseService;
 import com.weblab.service.vk.VkService;
 import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.text.MessageFormat;
 /**
  * Created by amowel on 03.04.17.
  */
-@Data
+
 @Slf4j
 @Setter
 @Service
@@ -27,6 +28,7 @@ public class VkHandler implements Handler {
 
     @Autowired
     private UserRequestsInfoRepository requestRepository;
+    @Getter
     @Autowired
     private VkService vkService;
     @Autowired
@@ -37,10 +39,10 @@ public class VkHandler implements Handler {
         UserRequestsInfo userRequestsInfo = requestRepository.findUserRequestsInfo(message.getUserId());
         if (userRequestsInfo == null) {
             log.info("User with id {} makes first request", message.getUserId());
-            requestRepository.saveUserRequestsInfo(new UserRequestsInfo(message.getUserId(), 0));
+            userRequestsInfo=requestRepository.saveUserRequestsInfo(new UserRequestsInfo(message.getUserId(), 1));
         }
         try {
-            if (userRequestsInfo.getRequestCounter() >= 5) {
+            if (requestRepository.isBanned(userRequestsInfo.getVkId())) {
                 log.info("User should be banned");
                 vkService.sendMessage(message,"You`re timeouted");
             } else {

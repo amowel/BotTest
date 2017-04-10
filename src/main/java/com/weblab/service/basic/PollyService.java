@@ -70,6 +70,7 @@ public class PollyService {
         AdvancedPlayer player = new AdvancedPlayer(speechStream,
                 javazoom.jl.player.FactoryRegistry.systemRegistry().createAudioDevice());
         player.play();
+
     }
 
     public List<Voice> getAllVoices() {

@@ -19,16 +19,18 @@ import java.util.concurrent.TimeUnit;
 public class SimpleUserRequestsInfoRepository implements UserRequestsInfoRepository {
 
     public static final String Key = "vk:";
+    public static final String KEY_BANNED="banned:";
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
 
     @Override
-    public void saveUserRequestsInfo(UserRequestsInfo userRequestsInfo) {
+    public UserRequestsInfo saveUserRequestsInfo(UserRequestsInfo userRequestsInfo) {
         final Map< String, Integer > properties = new HashMap<>();
         properties.put("requestCounter",1);
         redisTemplate.opsForHash().putAll(Key+userRequestsInfo.getVkId(),properties);
         redisTemplate.expire(Key+userRequestsInfo.getVkId(),20, TimeUnit.SECONDS);
+        return userRequestsInfo;
     }
 
     @Override
@@ -38,9 +40,22 @@ public class SimpleUserRequestsInfoRepository implements UserRequestsInfoReposit
             return null;
         return new UserRequestsInfo(vkId,Integer.parseInt((String)list.get(0)));
     }
+    @Override
+    public boolean isBanned(Long vkId)
+    {
+         if(redisTemplate.opsForValue().get(KEY_BANNED+vkId)==null)
+             return false;
+         else return true;
+    }
 
     @Override
     public void updateUserRequestsInfo(UserRequestsInfo userRequestsInfo) {
-        redisTemplate.opsForHash().increment(Key+ userRequestsInfo.getVkId(),"requestCounter",1);
+        if(redisTemplate.opsForHash().increment(Key+ userRequestsInfo.getVkId(),"requestCounter",1)>5)
+            redisTemplate.opsForValue().set(KEY_BANNED+userRequestsInfo.getVkId(),true,300,TimeUnit.SECONDS);
+
+        log.info("User key will be expired in {}",redisTemplate.getExpire(Key+userRequestsInfo.getVkId()));
     }
+
+
+
 }

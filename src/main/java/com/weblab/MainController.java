@@ -2,14 +2,13 @@ package com.weblab;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import com.weblab.bot.VkBot;
+import com.weblab.sources.VkBot;
+import com.weblab.configuration.vk.VkAuthHandler;
+import com.weblab.service.basic.EmailServiceWrapper;
 import com.weblab.service.basic.PollyService;
 import com.weblab.service.dal.UserServiceImpl;
-import com.weblab.service.basic.EmailServiceWrapper;
-import javazoom.jl.decoder.JavaLayerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
@@ -32,25 +30,23 @@ public class MainController {
 
     @Autowired
     private VkBot vkBot;
-  
+
     @Autowired
     private UserServiceImpl userDetailService;
-    
+
     @Autowired
     private PollyService pollyService;
+    @Autowired
+    private VkAuthHandler vkAuthHandler;
 
-
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() throws IOException, JavaLayerException {
-
-        return "home";
+    @RequestMapping(value = {"/","add-accounts","new-post"})
+    public String index(){
+        return "index";
     }
-
     @RequestMapping(value = "/vk", method = RequestMethod.POST, consumes = {"application/json"})
     @ResponseBody
     public ResponseEntity<String> vk(@RequestBody String json) throws IOException, ClientException, ApiException {
-        log.info("Get json from vk: {}",json);
+        log.info("Get json from vk: {}", json);
         vkBot.delegate(json);
         return new ResponseEntity<String>("ok", HttpStatus.OK);
     }
@@ -67,13 +63,12 @@ public class MainController {
         return "";
     }
 
-    @RequestMapping(value = "getcode", method = RequestMethod.GET)
+    @RequestMapping(value = "generatecode", method = RequestMethod.GET)
     public String status(@RequestParam(value = "code", required = true) String code,
                          ModelMap model) throws IOException {
-
-        return "mainpage";
+        vkAuthHandler.authorize(code);
+         return  "redirect:https://homeless.ngrok.io/";
     }
-
 
 
     @GetMapping("mainpage")

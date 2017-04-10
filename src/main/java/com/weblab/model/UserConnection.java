@@ -25,7 +25,7 @@ public class UserConnection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "vkid",length = 12, nullable = false)
+    @Column(name = "vkid",length = 12, nullable = false, unique = true)
     private Long vkId;
     @Column(name = "username",length = 30, nullable = false)
     private String username;
