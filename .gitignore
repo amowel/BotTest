@@ -48,3 +48,7 @@ hs_err_pid*
 /src/main/resources/static/OwlCarousel2-2.2.1/_config.json
 /src/main/resources/static/OwlCarousel2-2.2.1/Gruntfile.js
 /src/main/resources/static/OwlCarousel2-2.2.1/LICENSE
+/.mvn/
+/mvnw.cmd
+/mvnw
+

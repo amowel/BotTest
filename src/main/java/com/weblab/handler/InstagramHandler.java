@@ -7,7 +7,7 @@ import com.weblab.exceptions.LoginFailedException;
 import com.weblab.exceptions.LogoutFailedException;
 import com.weblab.model.UserConnection;
 import com.weblab.service.basic.JsonParseService;
-import com.weblab.service.instagram.InstagramService;
+import com.weblab.service.InstagramService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

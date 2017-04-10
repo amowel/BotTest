@@ -12,7 +12,7 @@ class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="username" value="${spring.datasource.username}"/>
     <property name="password" value="${spring.datasource.password}"/>
 </bean>
-<bean id="vkProvider" class="com.weblab.model.vk.VkProvider">
+<bean id="vkProvider" class="com.weblab.configuration.vk.VkAuthHandler$VkProvider">
     <constructor-arg name="accessToken" value="e6242acc2fb1337e0f6fddd51c41331dd366589470e9dd35ebad05d8a48a4f85af7b544ce77a42a04b5ce"/>
     <constructor-arg name="userAccessToken" value="15e35e2623914da8bcbafbece8278fee02be720c596993003d9c181ba4c381825503c8e5ebc00973895b4"/>
     <constructor-arg name="userId" value="212372727"/>

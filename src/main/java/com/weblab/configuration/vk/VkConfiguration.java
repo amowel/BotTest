@@ -3,13 +3,10 @@ package com.weblab.configuration.vk;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.vk.api.sdk.actions.Messages;
-import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
-import com.weblab.api.MessagesApi;
-import com.weblab.api.VkApiExtended;
+import com.weblab.vkapi.MessagesApi;
+import com.weblab.vkapi.VkApiExtended;
 import com.weblab.service.basic.PollyService;
-import com.weblab.model.vk.model.VkDisplay;
-import com.weblab.model.vk.model.VkScopeBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -24,7 +21,7 @@ public class VkConfiguration {
         return new VkAuthHandler(
                 "5901447",
                 "HPR1KEzDcy5ZRtjN9nS5",
-                new VkScopeBuilder()
+                new VkAuthHandler.VkScopeBuilder()
                 .ads()
                 .audio()
                 .docs()
@@ -40,7 +37,7 @@ public class VkConfiguration {
                 .status()
                 .build(),
                 "https://homeless.ngrok.io/generatecode",
-                VkDisplay.PAGE,
+                VkAuthHandler.VkDisplay.PAGE,
                 "code",
                 "5.62",
                 "142765838"

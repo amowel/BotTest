@@ -1,4 +1,4 @@
-package com.weblab.service.instagram;
+package com.weblab.service;
 
 
 import com.vk.api.sdk.objects.messages.Message;
@@ -80,10 +80,11 @@ public class InstagramService {
     }
 
     public void post(Message message) throws ImageNotFoundException, LoginFailedException {
+        File file=null;
         try {
             UserConnection userConnection = userConnectionService.findByVkID((long) message.getUserId());
             Instagram4j instagram = login(userConnection);
-            File file = new File(fileService.generateImageFilename());
+            file =  File.createTempFile(fileService.generateImageFilename(),"");
             List<Photo> photos = getPhotosFromMessage(message);
             FileUtils.copyURLToFile(getUrlFromHighestQualityPhoto(photos.get(0)), file);
             instagram.sendRequest(new InstagramUploadPhotoRequest(
@@ -99,6 +100,10 @@ public class InstagramService {
             e.setFeedBackMessage("Unable to login");
         } catch (Exception e) {
             throw new ImageNotFoundException("You need to send photo as an attachment to your message or forwarded messages",e);
+        }
+        finally {
+            if(file!=null)
+            file.delete();
         }
 
 

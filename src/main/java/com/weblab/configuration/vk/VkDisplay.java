@@ -1,4 +1,4 @@
-package com.weblab.model.vk.model;
+package com.weblab.configuration.vk;
 
 /**
  * Created by amowel on 18.03.17.

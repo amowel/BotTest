@@ -1,4 +1,4 @@
-package com.weblab.api;
+package com.weblab.vkapi;
 
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.Actor;

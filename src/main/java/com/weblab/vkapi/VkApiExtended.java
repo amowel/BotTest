@@ -1,7 +1,5 @@
-package com.weblab.api;
+package com.weblab.vkapi;
 
-import com.google.gson.Gson;
-import com.vk.api.sdk.actions.Messages;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import org.springframework.beans.factory.annotation.Autowired;

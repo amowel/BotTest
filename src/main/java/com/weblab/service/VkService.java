@@ -1,4 +1,4 @@
-package com.weblab.service.vk;
+package com.weblab.service;
 
 import com.amazonaws.services.polly.model.OutputFormat;
 import com.vk.api.sdk.exceptions.ApiException;
@@ -7,8 +7,8 @@ import com.vk.api.sdk.objects.docs.Doc;
 import com.vk.api.sdk.objects.docs.responses.DocUploadResponse;
 import com.vk.api.sdk.objects.docs.responses.GetUploadServerResponse;
 import com.vk.api.sdk.objects.messages.Message;
-import com.weblab.api.VkApiExtended;
-import com.weblab.model.vk.VkProvider;
+import com.weblab.vkapi.VkApiExtended;
+import com.weblab.configuration.vk.VkAuthHandler;
 import com.weblab.service.basic.FileService;
 import com.weblab.service.basic.JsonParseService;
 import com.weblab.service.basic.PollyService;
@@ -44,7 +44,7 @@ public class VkService {
     @Autowired
     JsonParseService parser;
     @Autowired
-    private VkProvider vkProvider;
+    private VkAuthHandler.VkProvider vkProvider;
     @Autowired
     private VkApiExtended vk;
 

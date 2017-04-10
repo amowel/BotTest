@@ -1,10 +1,8 @@
-package com.weblab.api;
+package com.weblab.vkapi;
 
 import com.vk.api.sdk.actions.Messages;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.Actor;
-import com.vk.api.sdk.queries.messages.MessagesSendQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**

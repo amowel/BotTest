@@ -1,8 +1,7 @@
-package com.weblab.model.vk;
+package com.weblab.configuration.vk;
 
 import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.client.actors.UserActor;
-import com.weblab.configuration.vk.VkAuthHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
