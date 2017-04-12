@@ -1,13 +1,14 @@
-package com.weblab.handler;
+package com.weblab.handler.impl;
 
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.messages.Message;
+import com.weblab.handler.Handler;
 import com.weblab.model.UserRequestsInfo;
 import com.weblab.repository.UserRequestsInfoRepository;
-import com.weblab.service.basic.JsonParseService;
 import com.weblab.service.VkService;
+import com.weblab.service.basic.JsonParseService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -38,12 +39,12 @@ public class VkHandler implements Handler {
         UserRequestsInfo userRequestsInfo = requestRepository.findUserRequestsInfo(message.getUserId());
         if (userRequestsInfo == null) {
             log.info("User with id {} makes first request", message.getUserId());
-            userRequestsInfo=requestRepository.saveUserRequestsInfo(new UserRequestsInfo(message.getUserId(), 1));
+            userRequestsInfo = requestRepository.saveUserRequestsInfo(new UserRequestsInfo(message.getUserId(), 1));
         }
         try {
             if (requestRepository.isBanned(userRequestsInfo.getVkId())) {
                 log.info("User should be banned");
-                vkService.sendMessage(message,"You`re timeouted");
+                vkService.sendMessage(message, "You`re timeouted");
             } else {
                 if (message.getBody().length() < 500) {
                     vkService.sendAudio(message);

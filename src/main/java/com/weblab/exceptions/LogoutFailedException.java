@@ -1,7 +1,5 @@
 package com.weblab.exceptions;
 
-import com.weblab.exceptions.InstagramException;
-
 /**
  * Created by amowel on 08.04.17.
  */

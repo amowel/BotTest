@@ -15,5 +15,4 @@ public class UserRequestsInfo {
         this.requestCounter = requestCounter;
     }
 
-
 }

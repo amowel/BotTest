@@ -5,13 +5,24 @@ import com.vk.api.sdk.client.actors.UserActor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-/**
- * Created by macuser on 26.10.16.
- */
 public final class VkProvider {
 
     @Autowired
     private VkAuthHandler vkAuthHandler;
+    private String accessToken;
+    private String userAccessToken;
+    private UserActor userActor;
+    private ServiceActor serviceActor;
+
+
+    public VkProvider(String accessToken, String userAccessToken, int userId, VkAuthHandler vkAuthHandler) {
+        this.accessToken = accessToken;
+        this.userAccessToken = userAccessToken;
+
+        this.serviceActor = new ServiceActor(Integer.valueOf(vkAuthHandler.getClientId()), vkAuthHandler.getSecureKey(), accessToken);
+        this.userActor = new UserActor(userId, userAccessToken);
+        this.vkAuthHandler = vkAuthHandler;
+    }
 
     public UserActor getUserActor() {
         return userActor;
@@ -29,7 +40,6 @@ public final class VkProvider {
         this.serviceActor = serviceActor;
     }
 
-
     public String getUserAccessToken() {
         return userAccessToken;
     }
@@ -38,17 +48,6 @@ public final class VkProvider {
         this.userAccessToken = userAccessToken;
     }
 
-    public VkProvider(String accessToken, String userAccessToken, int userId, VkAuthHandler vkAuthHandler) {
-        this.accessToken = accessToken;
-        this.userAccessToken=userAccessToken;
-
-        this.serviceActor = new ServiceActor(Integer.valueOf(vkAuthHandler.getClientId()), vkAuthHandler.getSecureKey(), accessToken);
-        this.userActor = new UserActor(userId, userAccessToken);
-        this.vkAuthHandler = vkAuthHandler;
-    }
-
-    private String accessToken;
-    private String userAccessToken;
     public String getAccessToken() {
         return accessToken;
     }
@@ -56,8 +55,5 @@ public final class VkProvider {
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
-
-    private UserActor userActor;
-    private ServiceActor serviceActor;
 
 }

@@ -29,10 +29,10 @@ public class UserConnectionService {
     }
 
     public UserConnection create(UserConnection userConnection) {
-                return repository.save(userConnection);
+           return repository.save(userConnection);
     }
 
-    public UserConnection findByVkID(Long vkId) {
+    public UserConnection findByVkId(Long vkId) {
         return repository.findByVkId(vkId);
 
     }
@@ -43,9 +43,12 @@ public class UserConnectionService {
 
     public void delete(Long vkId) throws LogoutFailedException {
         log.info("Trying to logout user with ID: {}", vkId);
-        if(findByVkID(vkId)==null)
-            throw new LogoutFailedException("You are not logged in yet");
-        repository.delete(findByVkID(vkId));
+        if (findByVkId(vkId) == null) {
+            LogoutFailedException exception = new LogoutFailedException("Entry with this "+vkId+" vkId isn`t exist");
+            exception.setFeedBackMessage("You are not logged in yet");
+            throw exception;
+        }
+            repository.delete(findByVkId(vkId));
     }
 
 

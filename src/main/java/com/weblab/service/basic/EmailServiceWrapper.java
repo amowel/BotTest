@@ -1,20 +1,15 @@
 package com.weblab.service.basic;
 
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.polly.model.OutputFormat;
 import com.google.common.collect.Lists;
 import it.ozimov.springboot.mail.model.Email;
 import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
 import it.ozimov.springboot.mail.service.EmailService;
-import javazoom.jl.decoder.JavaLayerException;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.InternetAddress;
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by amowel on 13.03.17.
@@ -37,7 +32,6 @@ public class EmailServiceWrapper {
                 .subject("Confirm registration")
                 .body("ajsdikansdkasnd")
                 .build();
-
 
         emailService.send(email);
     }

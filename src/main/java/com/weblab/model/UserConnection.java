@@ -2,6 +2,8 @@ package com.weblab.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -10,25 +12,28 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user_connections")
-@Data
+@Getter
+@Setter
+@Builder
 public class UserConnection {
-    public UserConnection() {
-    }
-
-    public UserConnection(Long vkId, String username, String password) {
-
-        this.vkId = vkId;
-        this.username = username;
-        this.password = password;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "vkid",length = 12, nullable = false, unique = true)
+    @Column(name = "vk_id", unique = true)
     private Long vkId;
-    @Column(name = "username",length = 30, nullable = false)
-    private String username;
-    @Column(name = "password",length = 12, nullable = false)
+    @Column(name="token")
+    private String token;
+    @Column(name = "inst_password")
     private String password;
+    @Column(name = "inst_username", unique = true)
+    private String username;
+
+
+    public UserConnection(Long id, Long vkId, String token, String password, String username) {
+        this.vkId = vkId;
+        this.token = token;
+        this.password = password;
+        this.username = username;
+    }
+    public UserConnection(){}
 }

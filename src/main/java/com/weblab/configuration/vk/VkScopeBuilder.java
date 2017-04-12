@@ -63,7 +63,7 @@ public class VkScopeBuilder {
     }
 
     public VkScopeBuilder offline() {
-        scope.append("pages,");
+        scope.append("offline,");
         return this;
     }
 
@@ -96,10 +96,12 @@ public class VkScopeBuilder {
         scope.append("market,");
         return this;
     }
+
     public VkScopeBuilder photos() {
         scope.append("photos,");
         return this;
     }
+
     public VkScopeBuilder manage() {
         scope.append("manage,");
         return this;
@@ -110,22 +112,5 @@ public class VkScopeBuilder {
         return scope.deleteCharAt(scope.length() - 1).toString();
     }
 
-    public static void main(String[] args) {
-        System.out.println( new VkScopeBuilder()
-                .ads()
-                .audio()
-                .docs()
-                .email()
-                .friends()
-                .groups()
-                .messages()
-                .offline()
-                .wall()
-                .notes()
-                .notifications()
-                .Notify()
-                .stats()
-                .status()
-                .build());
-    }
+
 }

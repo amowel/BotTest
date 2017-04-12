@@ -12,14 +12,16 @@ import java.util.Random;
 @Service
 public class FileService {
     private Random random;
-    public FileService()
-    {
+
+    public FileService() {
         random = new Random();
     }
-    public String generateAudioFileName(int id){
-        return String.valueOf(id)+random.nextInt(1000)+".3g";
+
+    public String generateAudioFileName(int id) {
+        return String.valueOf(id) + random.nextInt(1000) + ".3g";
     }
-    public String generateImageFilename(){
+
+    public String generateImageFilename() {
         return new StringBuilder()
                 .append(System.getProperty("user.home"))
                 .append(File.separator)

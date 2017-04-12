@@ -7,11 +7,11 @@ import com.vk.api.sdk.objects.docs.Doc;
 import com.vk.api.sdk.objects.docs.responses.DocUploadResponse;
 import com.vk.api.sdk.objects.docs.responses.GetUploadServerResponse;
 import com.vk.api.sdk.objects.messages.Message;
-import com.weblab.vkapi.VkApiExtended;
-import com.weblab.configuration.vk.VkAuthHandler;
+import com.weblab.configuration.vk.VkProvider;
 import com.weblab.service.basic.FileService;
 import com.weblab.service.basic.JsonParseService;
 import com.weblab.service.basic.PollyService;
+import com.weblab.vkapi.VkApiExtended;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -29,9 +29,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-/**
- * Created by amowel on 18.03.17.
- */
+
 @Service
 @Slf4j
 @Getter
@@ -44,7 +42,7 @@ public class VkService {
     @Autowired
     JsonParseService parser;
     @Autowired
-    private VkAuthHandler.VkProvider vkProvider;
+    private VkProvider vkProvider;
     @Autowired
     private VkApiExtended vk;
 

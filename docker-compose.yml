@@ -1,0 +1,28 @@
+version: '3'
+services:
+  web:
+    image: java:openjdk-8u91-jdk
+    working_dir: /app
+    volumes:
+      - ./target:/app
+      - ./tmp/:/sh
+    command: /sh/wait-for-it.sh db:5432 -- /sh/wait-for-it.sh redis:6379 -- java -jar /app/bot-1.0.jar
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+    restart: always
+
+  db:
+    image: postgres
+    expose: ["5432"]
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: docker
+      POSTGRES_DB: test
+
+  redis:
+    image: redis
+    
+      

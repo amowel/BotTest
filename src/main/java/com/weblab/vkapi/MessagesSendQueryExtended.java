@@ -4,7 +4,6 @@ import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.Actor;
 import com.vk.api.sdk.queries.messages.MessagesSendQuery;
 
-
 import java.util.List;
 
 /**
@@ -18,91 +17,91 @@ public class MessagesSendQueryExtended extends MessagesSendQuery {
 
     @Override
     public MessagesSendQueryExtended userId(Integer value) {
-        return (MessagesSendQueryExtended)super.userId(value);
+        return (MessagesSendQueryExtended) super.userId(value);
     }
 
     @Override
     public MessagesSendQueryExtended randomId(Integer value) {
-        return (MessagesSendQueryExtended)super.randomId(value);
+        return (MessagesSendQueryExtended) super.randomId(value);
     }
 
     @Override
     public MessagesSendQueryExtended peerId(Integer value) {
-        return (MessagesSendQueryExtended)super.peerId(value);
+        return (MessagesSendQueryExtended) super.peerId(value);
     }
 
     @Override
     public MessagesSendQueryExtended domain(String value) {
-        return (MessagesSendQueryExtended)super.domain(value);
+        return (MessagesSendQueryExtended) super.domain(value);
     }
 
     @Override
     public MessagesSendQueryExtended chatId(Integer value) {
-        return (MessagesSendQueryExtended)super.chatId(value);
+        return (MessagesSendQueryExtended) super.chatId(value);
     }
 
     @Override
     public MessagesSendQueryExtended userIds(Integer... value) {
-        return (MessagesSendQueryExtended)super.userIds(value);
+        return (MessagesSendQueryExtended) super.userIds(value);
     }
 
     @Override
     public MessagesSendQueryExtended userIds(List<Integer> value) {
-        return (MessagesSendQueryExtended)super.userIds(value);
+        return (MessagesSendQueryExtended) super.userIds(value);
     }
 
     @Override
     public MessagesSendQueryExtended message(String value) {
-        return (MessagesSendQueryExtended)super.message(value);
+        return (MessagesSendQueryExtended) super.message(value);
     }
 
     @Override
     public MessagesSendQueryExtended lat(Float value) {
-        return (MessagesSendQueryExtended)super.lat(value);
+        return (MessagesSendQueryExtended) super.lat(value);
     }
 
     @Override
     public MessagesSendQueryExtended lng(Float value) {
-        return (MessagesSendQueryExtended)super.lng(value);
+        return (MessagesSendQueryExtended) super.lng(value);
     }
 
     @Override
     public MessagesSendQueryExtended attachment(String... value) {
-        return (MessagesSendQueryExtended)super.attachment(value);
+        return (MessagesSendQueryExtended) super.attachment(value);
     }
 
     @Override
     public MessagesSendQueryExtended attachment(List<String> value) {
-        return (MessagesSendQueryExtended)super.attachment(value);
+        return (MessagesSendQueryExtended) super.attachment(value);
     }
 
     @Override
     public MessagesSendQueryExtended forwardMessages(String... value) {
-        return (MessagesSendQueryExtended)super.forwardMessages(value);
+        return (MessagesSendQueryExtended) super.forwardMessages(value);
     }
 
     @Override
     public MessagesSendQueryExtended forwardMessages(List<String> value) {
-        return (MessagesSendQueryExtended)super.forwardMessages(value);
+        return (MessagesSendQueryExtended) super.forwardMessages(value);
     }
 
     @Override
     public MessagesSendQueryExtended stickerId(Integer value) {
-        return (MessagesSendQueryExtended)super.stickerId(value);
+        return (MessagesSendQueryExtended) super.stickerId(value);
     }
 
     @Override
     public MessagesSendQueryExtended notification(Boolean value) {
-        return (MessagesSendQueryExtended)super.notification(value);
+        return (MessagesSendQueryExtended) super.notification(value);
     }
 
     @Override
     protected MessagesSendQueryExtended getThis() {
-        return (MessagesSendQueryExtended)super.getThis();
+        return (MessagesSendQueryExtended) super.getThis();
     }
 
     public MessagesSendQueryExtended title(String value) {
-        return (MessagesSendQueryExtended)unsafeParam("title", value);
+        return (MessagesSendQueryExtended) unsafeParam("title", value);
     }
 
 }

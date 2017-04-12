@@ -5,6 +5,7 @@ import com.vk.api.sdk.objects.messages.Message;
 import com.vk.api.sdk.objects.messages.MessageAttachment;
 import com.vk.api.sdk.objects.messages.MessageAttachmentType;
 import com.vk.api.sdk.objects.photos.Photo;
+import com.weblab.exceptions.BadImageAspectRatio;
 import com.weblab.exceptions.ImageNotFoundException;
 import com.weblab.exceptions.LoginFailedException;
 import com.weblab.exceptions.LogoutFailedException;
@@ -18,9 +19,8 @@ import org.brunocvcunha.instagram4j.requests.InstagramUploadPhotoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -40,73 +40,50 @@ public class InstagramService {
     @Autowired
     private FileService fileService;
 
-    public static void main(String[] args) {
-//        String rootPath = System.getProperty("user.home");
-//        String imagePath = rootPath + File.separator + "app/tmp/";
-//        String identity = LocalDateTime.now().toString();
-//        File file = new File(imagePath + "img");
-//        try {
-//            FileUtils.copyURLToFile(new URL("https://pp.userapi.com/c837238/v837238727/30e53/FbNzbI0bgE.jpg"), file);
-//            BufferedImage image = ImageIO.read(file);
-//            System.out.println(image.getWidth() * 1.0 / image.getHeight());
-//            System.out.println(image.getWidth());
-//            System.out.println(image.getHeight());
-//            BufferedImage newImage = Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, image.getWidth(), image.getHeight());
-//            System.out.println(newImage.getWidth());
-//            System.out.println(newImage.getHeight());
-//            ImageIO.write(newImage, "jpg", file);
-//            Instagram4j instagram = Instagram4j.builder().username("henaltestbot").password("lesikpisos").build();
-//            instagram.setup();
-//            instagram.login();
-//            instagram.sendRequest(new InstagramUploadPhotoRequest(
-//                    file, "dwdewdwe"
-//            ));
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        System.out.println("aa".startsWith("aa"));
-    }
-
     public void authorize(UserConnection userConnection) throws LoginFailedException {
-        try {
-            login(userConnection);
-            userConnectionService.create(userConnection);
-        } catch (Exception e) {
-            throw new LoginFailedException("You`re already logined in");
+
+        if (userConnectionService.findByVkId(userConnection.getVkId()) != null) {
+            LoginFailedException exception = new LoginFailedException("Entry with this " + userConnection.getVkId() + " vkId already exist");
+            exception.setFeedBackMessage("You`re already logged in");
+            throw exception;
         }
+        login(userConnection);
+        userConnectionService.create(userConnection);
+
     }
 
-    public void post(Message message) throws ImageNotFoundException, LoginFailedException {
-        File file=null;
+    public void post(Message message) throws ImageNotFoundException, LoginFailedException, BadImageAspectRatio {
+        File file = null;
         try {
-            UserConnection userConnection = userConnectionService.findByVkID((long) message.getUserId());
+            UserConnection userConnection = userConnectionService.findByVkId((long) message.getUserId());
+            if (userConnection == null) {
+                LoginFailedException loginFailedException = new LoginFailedException("There is no corresponding pair " +
+                        "vkId/instagram credentials in database");
+                loginFailedException.setVkMessage(message);
+                loginFailedException.setFeedBackMessage("You`re not logged in yet");
+                throw loginFailedException;
+            }
             Instagram4j instagram = login(userConnection);
-            file =  File.createTempFile(fileService.generateImageFilename(),"");
+            file = File.createTempFile(fileService.generateImageFilename(), "");
             List<Photo> photos = getPhotosFromMessage(message);
             FileUtils.copyURLToFile(getUrlFromHighestQualityPhoto(photos.get(0)), file);
             instagram.sendRequest(new InstagramUploadPhotoRequest(
                     file,
                     message.getBody().replace("post ", "")));
-        } catch (ImageNotFoundException e) {
-
-            e.setVkMessage(message);
-            e.setFeedBackMessage("You need to send photo as an attachment to your message or forwarded messages");
-            throw e;
-        } catch (LoginFailedException e) {
-            e.setVkMessage(message);
-            e.setFeedBackMessage("Unable to login");
-        } catch (Exception e) {
-            throw new ImageNotFoundException("You need to send photo as an attachment to your message or forwarded messages",e);
+        } catch (IllegalArgumentException e) {
+            BadImageAspectRatio exception = new BadImageAspectRatio("Instagram allowed aspect ratio is from 0.8 to 1.91", e);
+            exception.setFeedBackMessage("The photo you tried to post has not allowed by instagram proportions");
+            throw exception;
+        } catch (IOException|IndexOutOfBoundsException e) {
+            ImageNotFoundException exception = new ImageNotFoundException("Can`t find photo in received message", e);
+            exception.setFeedBackMessage("You need to send photo as an attachment to" +
+                    " your message or forwarded messages");
+            throw exception;
         }
         finally {
-            if(file!=null)
-            file.delete();
+            if (file != null)
+                file.delete();
         }
-
-
     }
 
     public void logout(Integer id) throws LogoutFailedException {
@@ -121,7 +98,10 @@ public class InstagramService {
             instagram.login();
             return instagram;
         } catch (LinkageError | Exception e) {
-            throw new LoginFailedException("Wrong username or password");
+            LoginFailedException exception = new LoginFailedException("Can`t login in instagram. Likely the cause is " +
+                    "wrong credentials, but also can be something much worse",e);
+            exception.setFeedBackMessage("Wrong username or password");
+            throw exception;
         }
 
     }

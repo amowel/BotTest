@@ -473,8 +473,8 @@ var UserInfo = (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return socials; });
 
 var socials = [
-    new __WEBPACK_IMPORTED_MODULE_0__CSocial__["a" /* Social */](0, "vk", "/src/assets/add-accounts/vk.png"),
-    new __WEBPACK_IMPORTED_MODULE_0__CSocial__["a" /* Social */](1, "instagram", "/src/assets/add-accounts/insta.png")
+    new __WEBPACK_IMPORTED_MODULE_0__CSocial__["a" /* Social */](0, "vk", "/assets/add-accounts/vk.png"),
+    new __WEBPACK_IMPORTED_MODULE_0__CSocial__["a" /* Social */](1, "instagram", "/assets/add-accounts/insta.png")
 ];
 //# sourceMappingURL=socials.js.map
 
@@ -487,7 +487,7 @@ var socials = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__CUserInfo__ = __webpack_require__(97);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return userInfo; });
 
-var userInfo = new __WEBPACK_IMPORTED_MODULE_0__CUserInfo__["a" /* UserInfo */]("Oleksiy Sadliak", "/src/assets/img.png");
+var userInfo = new __WEBPACK_IMPORTED_MODULE_0__CUserInfo__["a" /* UserInfo */]("Oleksiy Sadliak", "/assets/img.png");
 //# sourceMappingURL=userInfo.js.map
 
 /***/ })

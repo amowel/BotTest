@@ -18,6 +18,6 @@ public class MessagesApi extends Messages {
 
     @Override
     public MessagesSendQueryExtended send(Actor actor) {
-        return new MessagesSendQueryExtended(getClient(),actor);
+        return new MessagesSendQueryExtended(getClient(), actor);
     }
 }

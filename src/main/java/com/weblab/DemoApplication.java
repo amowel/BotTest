@@ -15,12 +15,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAutoConfiguration
 @EnableAsync
 @EnableCaching
-@ImportResource("/Beans.xml")
+@ImportResource("classpath:/Beans.xml")
 
 public class DemoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-		
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+
+    }
 }
