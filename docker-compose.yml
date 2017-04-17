@@ -6,23 +6,25 @@ services:
     volumes:
       - ./target:/app
       - ./tmp/:/sh
-    command: /sh/wait-for-it.sh db:5432 -- /sh/wait-for-it.sh redis:6379 -- java -jar /app/bot-1.0.jar
+    command: /sh/wait-for-it.sh db:5432 -- /sh/wait-for-it.sh redis:6379 -- java -jar -Dspring.profiles.active=container /app/bot-1.0.jar
     ports:
-      - "8080:8080"
+      - "80:8080"
     depends_on:
       - db
       - redis
     restart: always
 
   db:
-    image: postgres
+    image: sameersbn/postgresql:9.6-2
     expose: ["5432"]
+    restart: always
     environment:
-      POSTGRES_PASSWORD: docker
-      POSTGRES_USER: docker
-      POSTGRES_DB: test
-
+     DB_USER: "docker"
+     DB_PASS: "docker"
+     DB_NAME: "test"
+    volumes:
+    - /srv/docker/postgresql:/var/lib/postgresql
+    - ./src/main/resources/data:/docker-entrypoint-initdb.d
   redis:
     image: redis
     
-      

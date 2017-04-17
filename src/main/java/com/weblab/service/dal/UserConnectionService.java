@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @Service
 
-public class UserConnectionService {
+public class    UserConnectionService {
     @Autowired
     private UserConnectionRepository repository;
 

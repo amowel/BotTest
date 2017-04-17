@@ -47,7 +47,7 @@ public class VkService {
     private VkApiExtended vk;
 
     private String rawUrl() {
-        return "https://api.vk.com/method/docs.getUploadServer?access_token=" + vkProvider.getUserAccessToken() +
+        return "https://api.vk.com/method/docs.getUploadServer?access_token=" + vkProvider.getAccessToken() +
                 "&type=audio_message&v=5.62";
     }
 
@@ -91,7 +91,7 @@ public class VkService {
             HttpResponse response = httpclient.execute(httpPost);
             DocUploadResponse docUploadResponse = parser.parsePostUploadResponse(IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset()));
             ResponseEntity<String> rawDocs = restTemplate.getForEntity("https://api.vk.com/method/docs.save?file="
-                    + docUploadResponse.getFile() + "&access_token=" + vkProvider.getUserAccessToken() + "&v=5.60", String.class);
+                    + docUploadResponse.getFile() + "&access_token=" + vkProvider.getAccessToken() + "&v=5.60", String.class);
             Doc document = parser.parseDocs(rawDocs.getBody()).get(0);
             vk.messages().send(vkProvider.getServiceActor()).userId(message.getUserId())
                     .attachment("doc" + document.getOwnerId() + "_" + document.getId()).execute();

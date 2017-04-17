@@ -46,7 +46,8 @@ public class JsonParseService {
         }.getType();
         return gson.fromJson(jsonObject.get("response"), type);
     }
-    public Token parseToken(String json){
-        return gson.fromJson(json,Token.class);
+
+    public Token parseToken(String json) {
+        return gson.fromJson(json, Token.class);
     }
 }

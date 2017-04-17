@@ -112,11 +112,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
         </dependency>
@@ -132,7 +127,17 @@
             <version>1.16.16</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/hibernate3-maven-plugin -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-maven-plugin</artifactId>
+            <version>4.3.1.Final</version>
+        </dependency>
 
     </dependencies>
 
@@ -174,4 +179,5 @@
             <url>https://repo.spring.io/libs-release</url>
         </pluginRepository>
     </pluginRepositories>
+
 </project>

@@ -10,6 +10,7 @@ import com.amazonaws.services.polly.model.SynthesizeSpeechResult;
 import com.amazonaws.services.polly.model.Voice;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -49,19 +50,6 @@ public class PollyService {
         SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
 
         return synthRes.getAudioStream();
-    }
-
-
-    public File createFile(String text, String author) throws IOException {
-        String rootPath = System.getProperty("user.home");
-        String imagePath = rootPath + File.separator + "/tmp";
-        String identity = LocalDateTime.now().toString();
-        File file = new File(imagePath
-                + author + "|" + identity + ".3g");
-        OutputStream outputStream = new FileOutputStream(file);
-        IOUtils.copy(this.synthesize(text, OutputFormat.Mp3), outputStream);
-        outputStream.close();
-        return file;
     }
 
 
