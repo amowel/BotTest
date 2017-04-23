@@ -4,6 +4,7 @@ Powerful platform that aimed to help everyone who tired from mess with various s
 This project is hosted on DigitalOcean and fully accessible at https://vk.com/im?sel=-142765838 . To use it just send a message. If you encountered some problems (bot isn't working or some command doesn't work properly) please [contact me](#contact). Also for he security of your data you can use test **instagram account** specilly created for it:
 
 **username: henaltestbot**
+
 **password: amazingbot**
 #### Commands
 ##### Instagram Commands:
