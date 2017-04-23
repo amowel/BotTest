@@ -4,7 +4,9 @@ import com.vk.api.sdk.objects.messages.Message;
 import com.weblab.exceptions.CommandSyntaxException;
 import com.weblab.exceptions.InstagramException;
 import com.weblab.handler.Handler;
-import com.weblab.model.UserConnection;
+import com.weblab.model.Account;
+import com.weblab.model.InstagramConnection;
+import com.weblab.model.VkConnection;
 import com.weblab.service.InstagramService;
 import com.weblab.service.basic.JsonParseService;
 import com.weblab.sources.VkBot;
@@ -13,6 +15,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 /**
  * Created by amowel on 03.04.17.
@@ -40,13 +44,13 @@ public class InstagramHandler implements Handler {
                 String[] credentials = body.replace("login ", "").split(" ");
                 if(credentials.length!=2)
                     throw new ArrayIndexOutOfBoundsException("login command should have only two parameters");
-                UserConnection connection = UserConnection
+                Account account = Account
                         .builder()
-                        .vkId(message.getUserId().longValue())
-                        .username(credentials[0])
-                        .password(credentials[1])
+                        .created(LocalDate.now())
+                        .vkConnection(new VkConnection(String.valueOf(message.getUserId()), null))
+                        .instagramConnection(new InstagramConnection(credentials[0], credentials[1]))
                         .build();
-                instagramService.authorize(connection);
+                instagramService.authorize(account);
                 log.info("User {} logined  in instagram", credentials[0]);
                 vkBot.sendCallback(message, "You successfully logined in instagram");
             } else if (message.getBody().startsWith("post ")) {

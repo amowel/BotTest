@@ -9,9 +9,9 @@ import com.weblab.exceptions.BadImageAspectRatio;
 import com.weblab.exceptions.ImageNotFoundException;
 import com.weblab.exceptions.LoginFailedException;
 import com.weblab.exceptions.LogoutFailedException;
-import com.weblab.model.UserConnection;
+import com.weblab.model.Account;
 import com.weblab.service.basic.FileService;
-import com.weblab.service.dal.UserConnectionService;
+import com.weblab.service.dal.AccountDao;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.brunocvcunha.instagram4j.Instagram4j;
@@ -36,34 +36,34 @@ import java.util.stream.Collectors;
 @Slf4j
 public class InstagramService {
     @Autowired
-    private UserConnectionService userConnectionService;
+    private AccountDao dao;
     @Autowired
     private FileService fileService;
 
-    public void authorize(UserConnection userConnection) throws LoginFailedException {
+    public void authorize(Account account) throws LoginFailedException {
 
-        if (userConnectionService.findByVkId(userConnection.getVkId()) != null) {
-            LoginFailedException exception = new LoginFailedException("Entry with this " + userConnection.getVkId() + " vkId already exist");
+        if (account.getVkConnection().getVkId()!= null) {
+            LoginFailedException exception = new LoginFailedException("Entry with this " + account.getVkConnection().getVkId() + " vkId already exist");
             exception.setFeedBackMessage("You`re already logged in");
             throw exception;
         }
-        login(userConnection);
-        userConnectionService.create(userConnection);
+        login(account);
+        dao.save(account);
 
     }
 
     public void post(Message message) throws ImageNotFoundException, LoginFailedException, BadImageAspectRatio {
         File file = null;
         try {
-            UserConnection userConnection = userConnectionService.findByVkId((long) message.getUserId());
-            if (userConnection == null) {
+            Account account = dao.findByVkId(String.valueOf(message.getUserId()));
+            if (account == null||account.getInstagramConnection()==null) {
                 LoginFailedException loginFailedException = new LoginFailedException("There is no corresponding pair " +
                         "vkId/instagram credentials in database");
                 loginFailedException.setVkMessage(message);
                 loginFailedException.setFeedBackMessage("You`re not logged in yet");
                 throw loginFailedException;
             }
-            Instagram4j instagram = login(userConnection);
+            Instagram4j instagram = login(account);
             file = File.createTempFile(fileService.generateImageFilename(), "");
             List<Photo> photos = getPhotosFromMessage(message);
             FileUtils.copyURLToFile(getUrlFromHighestQualityPhoto(photos.get(0)), file);
@@ -86,14 +86,24 @@ public class InstagramService {
         }
     }
 
-    public void logout(Integer id) throws LogoutFailedException {
-        userConnectionService.delete(Long.valueOf(id.toString()));
+    public void logout(int vkId) throws LogoutFailedException {
+        log.info("Trying to logout user with ID: {}", vkId);
+        if(dao.findByVkId(String.valueOf(vkId))==null){
+            LogoutFailedException exception = new LogoutFailedException("Entry with this "+vkId+" vkId isn`t exist");
+            exception.setFeedBackMessage("You are not logged in yet");
+            throw exception;
+        }
+        dao.findByVkId(String.valueOf(vkId)).setInstagramConnection(null);
+
     }
 
-    private Instagram4j login(UserConnection userConnection) throws LoginFailedException {
-        log.info(userConnection.toString());
+    private Instagram4j login(Account account) throws LoginFailedException {
         try {
-            Instagram4j instagram = Instagram4j.builder().username(userConnection.getUsername()).password(userConnection.getPassword()).build();
+            Instagram4j instagram = Instagram4j
+                    .builder()
+                    .username(account.getInstagramConnection().getUsername())
+                    .password(account.getInstagramConnection().getPassword())
+                    .build();
             instagram.setup();
             instagram.login();
             return instagram;

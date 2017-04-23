@@ -11,6 +11,7 @@ import com.weblab.configuration.vk.VkProvider;
 import com.weblab.service.basic.FileService;
 import com.weblab.service.basic.JsonParseService;
 import com.weblab.service.basic.PollyService;
+import com.weblab.service.dal.AccountDao;
 import com.weblab.vkapi.VkApiExtended;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,8 @@ public class VkService {
     private VkProvider vkProvider;
     @Autowired
     private VkApiExtended vk;
+    @Autowired
+    AccountDao dao;
 
     private String rawUrl() {
         return "https://api.vk.com/method/docs.getUploadServer?access_token=" + vkProvider.getAccessToken() +
