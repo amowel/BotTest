@@ -92,28 +92,28 @@ module.exports = module.exports.toString();
 /***/ 159:
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"add-accounts\">\n  <h1>{{title}}</h1>\n  <h3>{{subtitle}}</h3>\n\n  <div id=\"socials-set\">\n    <div class=\"soc-el\" *ngFor = \"let social of socials\" (click) = \"socialClick(social)\" [ngClass]=\"{ 'logined': social.logInStatus }\">\n      <img src=\"{{social.imgSrc}}\" alt=\"\">\n    </div>\n  </div>\n</div>";
+module.exports = "<div id=\"add-accounts\">\n  <h1>{{title}}</h1>\n  <h3>{{subtitle}}</h3>\n\n  <div id=\"socials-set\">\n    <div class=\"soc-el\" *ngFor = \"let social of socials\" (click) = \"socialClick(social)\" [ngClass]=\"{ 'logined': social.logInStatus }\">\n      <img src=\"{{social.imgSrc}}\" alt=\"\">\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
 /***/ 160:
 /***/ (function(module, exports) {
 
-module.exports = "<left-menu></left-menu>\n<div id=\"main-screen\">\n    <router-outlet></router-outlet>\n</div>\n";
+module.exports = "<left-menu></left-menu>\n<div id=\"main-screen\">\n    <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
 /***/ 161:
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"create-post\">\n  <h1>{{title}}</h1>\n  <h3>{{subtitle}}</h3>\n\n  <form action=\"\">\n    <textarea name=\"message\" placeholder=\"What's new?\"></textarea>\n    <div class=\"buttons-group\">\n      <a href=\"#\" class=\"btn-def\">Attach</a>\n      <a href=\"#\" class=\"btn-def\">Send</a>\n      <div class=\"clr\"></div>\n    </div>\n\n    <span>Choose social networks you want to post</span>\n    <div id=\"socials-switch\">\n      <div class=\"switch-el\">\n        <img src=\"/assets/create-post/fb.png\" alt=\"\">\n\n        <label class=\"switch\">\n          <input type=\"checkbox\">\n          <div class=\"slider round\"></div>\n        </label>\n      </div>\n\n      <div class=\"switch-el\">\n        <img src=\"/assets/create-post/vk.png\" alt=\"\">\n\n        <label class=\"switch\">\n          <input type=\"checkbox\">\n          <div class=\"slider round\"></div>\n        </label>\n      </div>\n    </div>\n  </form>\n</div>\n";
+module.exports = "<div id=\"create-post\">\n  <h1>{{title}}</h1>\n  <h3>{{subtitle}}</h3>\n\n  <form action=\"\">\n    <textarea name=\"message\" placeholder=\"What's new?\"></textarea>\n    <div class=\"buttons-group\">\n      <a href=\"#\" class=\"btn-def\">Attach</a>\n      <a href=\"#\" class=\"btn-def\">Send</a>\n      <div class=\"clr\"></div>\n    </div>\n\n    <span>Choose social networks you want to post</span>\n    <div id=\"socials-switch\">\n      <div class=\"switch-el\">\n        <img src=\"/assets/create-post/fb.png\" alt=\"\">\n\n        <label class=\"switch\">\n          <input type=\"checkbox\">\n          <div class=\"slider round\"></div>\n        </label>\n      </div>\n\n      <div class=\"switch-el\">\n        <img src=\"/assets/create-post/vk.png\" alt=\"\">\n\n        <label class=\"switch\">\n          <input type=\"checkbox\">\n          <div class=\"slider round\"></div>\n        </label>\n      </div>\n    </div>\n  </form>\n</div>\n"
 
 /***/ }),
 
 /***/ 162:
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"left-menu\">\n  <div id=\"user-info\">\n    <img src=\"{{ userInfo.imgSource }}\" alt=\"\">\n    <h3>{{ userInfo.name }}</h3>\n  </div>\n  <hr />\n  <ul>\n    <li>\n      <a routerLink=\"messages\" class=\"btn-def btn-menu\">Messages</a>\n    </li>\n    <li>\n      <a routerLink=\"new-post\" class=\"btn-def btn-menu\">Create a post</a>\n    </li>\n    <li>\n      <a routerLink=\"old-post\" class=\"btn-def btn-menu\">View old posts</a>\n    </li>\n    <li>\n      <hr />\n      <a routerLink=\"add-accounts\" class=\"btn-def btn-menu\">Add accounts</a>\n    </li>\n  </ul>\n  <div id=\"menu-bottom\">\n  <hr />\n  <a href=\"#\" class=\"btn-def btn-logout\">Logout</a>\n  </div>\n</div>";
+module.exports = "<div id=\"left-menu\">\n  <div id=\"user-info\">\n    <img src=\"{{ userInfo.imgSource }}\" alt=\"\">\n    <h3>{{ userInfo.name }}</h3>\n  </div>\n  <hr />\n  <ul>\n    <li>\n      <a routerLink=\"messages\" class=\"btn-def btn-menu\">Messages</a>\n    </li>\n    <li>\n      <a routerLink=\"new-post\" class=\"btn-def btn-menu\">Create a post</a>\n    </li>\n    <li>\n      <a routerLink=\"old-post\" class=\"btn-def btn-menu\">View old posts</a>\n    </li>\n    <li>\n      <hr />\n      <a routerLink=\"add-accounts\" class=\"btn-def btn-menu\">Add accounts</a>\n    </li>\n  </ul>\n  <div id=\"menu-bottom\">\n  <hr />\n  <a href=\"#\" class=\"btn-def btn-logout\">Logout</a>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -233,7 +233,7 @@ var AddAccountsComponent = (function () {
         this.socials = this.service.getSocials();
     };
     AddAccountsComponent.prototype.socialClick = function (social) {
-        window.location.href = "https://oauth.vk.com/authorize?client_id=5901447&scope=ads,audio,docs,email,friends,groups,pages,wall,notes,notifications,notify,stats,status&redirect_uri=https://homeless.ngrok.io/generatecode&display=page&response_type=code&v=5.62";
+        window.location.href = "https://oauth.vk.com/authorize?client_id=5901447&scope=ads,audio,docs,email,friends,groups,pages,wall,notes,notifications,notify,stats,status&redirect_uri=http://162.243.194.41/generatecode&display=page&response_type=code&v=5.62";
     };
     return AddAccountsComponent;
 }());
