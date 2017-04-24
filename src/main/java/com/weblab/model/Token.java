@@ -14,5 +14,5 @@ public class Token {
     private Long userId;
     @SerializedName("expires_in")
     private Long expiresIn;
-
 }
+

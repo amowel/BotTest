@@ -1,12 +1,12 @@
-package com.weblab.handler.impl;
+package com.weblab.handler;
 
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.messages.Message;
-import com.weblab.handler.Handler;
+import com.weblab.dal.UserRequestsInfoRepository;
+import com.weblab.exceptions.CommandSyntaxException;
 import com.weblab.model.UserRequestsInfo;
-import com.weblab.repository.UserRequestsInfoRepository;
 import com.weblab.service.VkService;
 import com.weblab.service.basic.JsonParseService;
 import lombok.Getter;
@@ -34,7 +34,7 @@ public class VkHandler implements Handler {
     @Autowired
     private JsonParseService parser;
 
-    public void handle(String json) {
+    public void handle(String json) throws CommandSyntaxException {
         Message message = parser.parseMessage(json);
         UserRequestsInfo userRequestsInfo = requestRepository.findUserRequestsInfo(message.getUserId());
         if (userRequestsInfo == null) {
@@ -46,7 +46,11 @@ public class VkHandler implements Handler {
                 log.info("User should be banned");
                 vkService.sendMessage(message, "You`re timeouted");
             } else {
-                if (message.getBody().length() < 500) {
+                if (message.getBody().length() == 3) {
+                    CommandSyntaxException exception = new CommandSyntaxException("Wrong parameters");
+                    exception.setFeedBackMessage("Your command differs from proposed syntax. Maybe you forgot some parameters");
+                    throw exception;
+                } else if (message.getBody().length() < 500) {
                     vkService.sendAudio(message);
                 } else {
 

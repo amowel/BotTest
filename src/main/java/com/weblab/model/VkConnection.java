@@ -1,6 +1,5 @@
 package com.weblab.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,11 +20,10 @@ public class VkConnection {
     private String vkId;
     @Column(name = "token")
     private String token;
-    @OneToOne(mappedBy = "vkConnection")
-    @JoinColumn(name = "account_id", insertable = false , updatable = false)
-    @PrimaryKeyJoinColumn(referencedColumnName = "vk_connection_id")
+    @OneToOne
     private Account account;
-    public  VkConnection(String vkId, String token){
+
+    public VkConnection(String vkId, String token) {
         this.vkId = vkId;
         this.token = token;
     }

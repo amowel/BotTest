@@ -1,4 +1,4 @@
-package com.weblab.service.dal;
+package com.weblab.dal;
 
 import com.weblab.model.Account;
 import lombok.Getter;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by amowel on 20.04.17.
@@ -62,13 +63,24 @@ public class AccountDao implements SocialDao<Account> {
     public void delete(Account connection) {
         sessionFactory.getCurrentSession().delete(connection);
     }
-    public Account findByVkId(String vkId)
-    {
-        return vkDao.findByVkId(vkId).getAccount();
+
+    public Account findByVkId(String vkId) {
+        if (vkDao.findByVkId(vkId) != null)
+            return vkDao.findByVkId(vkId).getAccount();
+        else
+            return null;
     }
-    public Account findByInstagramUsername(String username)
-    {
-        return instagramDao.findByUsername(username).getAccount();
+
+    public Account findByInstagramUsername(String username) {
+        if (instagramDao.findByUsername(username) != null)
+            return instagramDao.findByUsername(username).getAccount();
+        else
+            return null;
+    }
+
+    public String getRandomAccessToken() {
+        List tokens = vkDao.getUserTokens();
+        return vkDao.getUserTokens().get(ThreadLocalRandom.current().nextInt(tokens.size()));
     }
 
 }

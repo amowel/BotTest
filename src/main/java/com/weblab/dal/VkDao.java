@@ -1,4 +1,4 @@
-package com.weblab.service.dal;
+package com.weblab.dal;
 
 import com.weblab.model.VkConnection;
 import lombok.Getter;
@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -59,5 +60,12 @@ public class VkDao implements SocialDao<VkConnection> {
     @Override
     public void delete(VkConnection connection) {
         sessionFactory.getCurrentSession().delete(connection);
+    }
+
+    public List<String> getUserTokens() {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(VkConnection.class);
+        return criteria
+                .setProjection(Projections.property("token"))
+                .list();
     }
 }

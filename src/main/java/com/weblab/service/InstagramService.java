@@ -5,13 +5,13 @@ import com.vk.api.sdk.objects.messages.Message;
 import com.vk.api.sdk.objects.messages.MessageAttachment;
 import com.vk.api.sdk.objects.messages.MessageAttachmentType;
 import com.vk.api.sdk.objects.photos.Photo;
+import com.weblab.dal.AccountDao;
 import com.weblab.exceptions.BadImageAspectRatio;
 import com.weblab.exceptions.ImageNotFoundException;
 import com.weblab.exceptions.LoginFailedException;
 import com.weblab.exceptions.LogoutFailedException;
 import com.weblab.model.Account;
 import com.weblab.service.basic.FileService;
-import com.weblab.service.dal.AccountDao;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.brunocvcunha.instagram4j.Instagram4j;
@@ -41,22 +41,27 @@ public class InstagramService {
     private FileService fileService;
 
     public void authorize(Account account) throws LoginFailedException {
-
-        if (account.getVkConnection().getVkId()!= null) {
+        Account searchedAccount = dao.findByVkId(account.getVkConnection().getVkId());
+        if (searchedAccount != null && searchedAccount.getInstagramConnection() == null) {
+            account.getInstagramConnection().setAccount(searchedAccount);
+            searchedAccount.setInstagramConnection(account.getInstagramConnection());
+            login(searchedAccount);
+            dao.save(searchedAccount);
+        } else if (searchedAccount != null && searchedAccount.getInstagramConnection() != null) {
             LoginFailedException exception = new LoginFailedException("Entry with this " + account.getVkConnection().getVkId() + " vkId already exist");
             exception.setFeedBackMessage("You`re already logged in");
             throw exception;
+        } else {
+            login(account);
+            dao.save(account);
         }
-        login(account);
-        dao.save(account);
-
     }
 
     public void post(Message message) throws ImageNotFoundException, LoginFailedException, BadImageAspectRatio {
         File file = null;
         try {
             Account account = dao.findByVkId(String.valueOf(message.getUserId()));
-            if (account == null||account.getInstagramConnection()==null) {
+            if (account == null || account.getInstagramConnection() == null) {
                 LoginFailedException loginFailedException = new LoginFailedException("There is no corresponding pair " +
                         "vkId/instagram credentials in database");
                 loginFailedException.setVkMessage(message);
@@ -74,13 +79,12 @@ public class InstagramService {
             BadImageAspectRatio exception = new BadImageAspectRatio("Instagram allowed aspect ratio is from 0.8 to 1.91", e);
             exception.setFeedBackMessage("The photo you tried to post has not allowed by instagram proportions");
             throw exception;
-        } catch (IOException|IndexOutOfBoundsException e) {
+        } catch (IOException | IndexOutOfBoundsException e) {
             ImageNotFoundException exception = new ImageNotFoundException("Can`t find photo in received message", e);
             exception.setFeedBackMessage("You need to send photo as an attachment to" +
                     " your message or forwarded messages");
             throw exception;
-        }
-        finally {
+        } finally {
             if (file != null)
                 file.delete();
         }
@@ -88,12 +92,13 @@ public class InstagramService {
 
     public void logout(int vkId) throws LogoutFailedException {
         log.info("Trying to logout user with ID: {}", vkId);
-        if(dao.findByVkId(String.valueOf(vkId))==null){
-            LogoutFailedException exception = new LogoutFailedException("Entry with this "+vkId+" vkId isn`t exist");
+        if (dao.findByVkId(String.valueOf(vkId)) == null || dao.findByVkId(String.valueOf(vkId)).getInstagramConnection() == null) {
+            LogoutFailedException exception = new LogoutFailedException("Entry with this " + vkId + " vkId isn`t exist");
             exception.setFeedBackMessage("You are not logged in yet");
             throw exception;
         }
-        dao.findByVkId(String.valueOf(vkId)).setInstagramConnection(null);
+        Account account = dao.findByVkId(String.valueOf(vkId));
+        dao.getInstagramDao().delete(account.getInstagramConnection());
 
     }
 
@@ -109,7 +114,7 @@ public class InstagramService {
             return instagram;
         } catch (LinkageError | Exception e) {
             LoginFailedException exception = new LoginFailedException("Can`t login in instagram. Likely the cause is " +
-                    "wrong credentials, but also can be something much worse",e);
+                    "wrong credentials, but also can be something much worse", e);
             exception.setFeedBackMessage("Wrong username or password");
             throw exception;
         }

@@ -23,9 +23,11 @@ public class Account {
     private String username;
     @Column(name = "password")
     private String password;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "account")
+    @JoinColumn
     private VkConnection vkConnection;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "account")
+    @JoinColumn
     private InstagramConnection instagramConnection;
     @Column(name = "created")
     private LocalDate created;

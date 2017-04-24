@@ -1,9 +1,9 @@
-package com.weblab.handler.impl;
+package com.weblab.handler;
 
 import com.vk.api.sdk.objects.messages.Message;
+import com.weblab.dal.AccountDao;
 import com.weblab.exceptions.CommandSyntaxException;
 import com.weblab.exceptions.InstagramException;
-import com.weblab.handler.Handler;
 import com.weblab.model.Account;
 import com.weblab.model.InstagramConnection;
 import com.weblab.model.VkConnection;
@@ -25,6 +25,8 @@ import java.time.LocalDate;
 @Setter
 @Service
 public class InstagramHandler implements Handler {
+    @Autowired
+    AccountDao dao;
     @Getter
     @Autowired
     private InstagramService instagramService;
@@ -42,7 +44,7 @@ public class InstagramHandler implements Handler {
             if (message.getBody().startsWith("login ")) {
                 String body = message.getBody();
                 String[] credentials = body.replace("login ", "").split(" ");
-                if(credentials.length!=2)
+                if (credentials.length != 2)
                     throw new ArrayIndexOutOfBoundsException("login command should have only two parameters");
                 Account account = Account
                         .builder()
@@ -51,8 +53,8 @@ public class InstagramHandler implements Handler {
                         .instagramConnection(new InstagramConnection(credentials[0], credentials[1]))
                         .build();
                 instagramService.authorize(account);
-                log.info("User {} logined  in instagram", credentials[0]);
-                vkBot.sendCallback(message, "You successfully logined in instagram");
+                log.info("User {} logged in instagram", credentials[0]);
+                vkBot.sendCallback(message, "You successfully logged in instagram");
             } else if (message.getBody().startsWith("post ")) {
                 instagramService.post(message);
                 vkBot.sendCallback(message, "Post successfully created");
@@ -61,13 +63,11 @@ public class InstagramHandler implements Handler {
                 vkBot.sendCallback(message, "You successfully logged out");
             } else {
                 CommandSyntaxException exception = new CommandSyntaxException("Wrong parameters");
-                exception.setFeedBackMessage("Your command differs from proposed syntax. Maybe you forget some parameters");
+                exception.setFeedBackMessage("Your command differs from proposed syntax. Maybe you forgot some parameters");
                 throw exception;
             }
-        }
-        catch (ArrayIndexOutOfBoundsException e)
-        {
-            CommandSyntaxException exception = new CommandSyntaxException("Wrong parameters",e);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            CommandSyntaxException exception = new CommandSyntaxException("Wrong parameters", e);
             exception.setFeedBackMessage("Your command differs from proposed syntax. Maybe you forgot some parameters.");
             throw exception;
         }

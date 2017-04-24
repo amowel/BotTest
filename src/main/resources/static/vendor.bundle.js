@@ -1326,7 +1326,7 @@ function resolveForwardRef(type) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var _THROW_IF_NOT_FOUND = new Object();
+var _THROW_IF_NOT_FOUND = {};
 var THROW_IF_NOT_FOUND = _THROW_IF_NOT_FOUND;
 var _NullInjector = (function () {
     function _NullInjector() {
@@ -2657,7 +2657,7 @@ function _createDependency(token, optional, visibility) {
  * found in the LICENSE file at https://angular.io/license
  */
 // Threshold for the dynamic version
-var UNDEFINED = new Object();
+var UNDEFINED = {};
 /**
  * A ReflectiveDependency injection container used for instantiating objects and resolving
  * dependencies.
@@ -3872,7 +3872,7 @@ var NgModuleFactory = (function () {
     };
     return NgModuleFactory;
 }());
-var _UNDEFINED = new Object();
+var _UNDEFINED = {};
 /**
  * @abstract
  */
@@ -6786,7 +6786,6 @@ var EventListener = (function () {
         this.name = name;
         this.callback = callback;
     }
-    ;
     return EventListener;
 }());
 /**
@@ -10088,7 +10087,7 @@ function removeFromArray(arr, index) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var EMPTY_CONTEXT = new Object();
+var EMPTY_CONTEXT = {};
 /**
  * @param {?} selector
  * @param {?} componentType
@@ -10223,7 +10222,6 @@ var ComponentRef_ = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
     Object.defineProperty(ComponentRef_.prototype, "hostView", {
         /**
          * @return {?}
@@ -10232,7 +10230,6 @@ var ComponentRef_ = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
     Object.defineProperty(ComponentRef_.prototype, "changeDetectorRef", {
         /**
          * @return {?}
@@ -10241,7 +10238,6 @@ var ComponentRef_ = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
     Object.defineProperty(ComponentRef_.prototype, "componentType", {
         /**
          * @return {?}
@@ -10348,7 +10344,6 @@ var ViewContainerRef_ = (function () {
         enumerable: true,
         configurable: true
     });
-    ;
     /**
      * @template C
      * @param {?} templateRef
@@ -10844,7 +10839,7 @@ var ViewContainerRefTokenKey = tokenKey(ViewContainerRef);
 var TemplateRefTokenKey = tokenKey(TemplateRef);
 var ChangeDetectorRefTokenKey = tokenKey(ChangeDetectorRef);
 var InjectorRefTokenKey = tokenKey(Injector);
-var NOT_CREATED = new Object();
+var NOT_CREATED = {};
 /**
  * @param {?} flags
  * @param {?} matchedQueries
@@ -14335,7 +14330,7 @@ function transition$$1(stateChangeExpr, steps) {
 
 //# sourceMappingURL=core.es5.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(32)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(32)));
 
 /***/ }),
 /* 4 */,
@@ -14632,7 +14627,7 @@ if (!exports.root) {
     throw new Error('RxJS could not find any global context (window, self, global)');
 }
 //# sourceMappingURL=root.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)));
 
 /***/ }),
 /* 15 */
@@ -14860,8 +14855,6 @@ var DomAdapter = (function () {
         enumerable: true,
         configurable: true
     });
-    ;
-    ;
     /**
      * @abstract
      * @param {?} nodeA
@@ -17255,7 +17248,6 @@ var EventManagerPlugin = (function () {
         }
         return this.addEventListener(target, eventName, handler);
     };
-    ;
     return EventManagerPlugin;
 }());
 /**
@@ -17443,7 +17435,6 @@ var DomRendererFactory2 = (function () {
         this.rendererByCompId = new Map();
         this.defaultRenderer = new DefaultDomRenderer2(eventManager);
     }
-    ;
     /**
      * @param {?} element
      * @param {?} type
@@ -24837,7 +24828,7 @@ function getResponseURL(xhr) {
     if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
         return xhr.getResponseHeader('X-Request-URL');
     }
-    return;
+
 }
 /**
  * @param {?} input
@@ -30626,7 +30617,6 @@ var InterpolationConfig = (function () {
         assertInterpolationSymbols('interpolation', markers);
         return new InterpolationConfig(markers[0], markers[1]);
     };
-    ;
     return InterpolationConfig;
 }());
 var DEFAULT_INTERPOLATION_CONFIG = new InterpolationConfig('{{', '}}');
@@ -34144,7 +34134,6 @@ var RecurseVisitor = (function () {
      * @return {?}
      */
     RecurseVisitor.prototype.visitText = function (text, context) { };
-    ;
     /**
      * @param {?} container
      * @param {?=} context
@@ -34178,14 +34167,12 @@ var RecurseVisitor = (function () {
      * @return {?}
      */
     RecurseVisitor.prototype.visitPlaceholder = function (ph, context) { };
-    ;
     /**
      * @param {?} ph
      * @param {?=} context
      * @return {?}
      */
     RecurseVisitor.prototype.visitIcuPlaceholder = function (ph, context) { };
-    ;
     return RecurseVisitor;
 }());
 /**
@@ -34690,7 +34677,7 @@ var _Visitor = (function () {
                     }
                     else {
                         this._reportError(comment, 'I18N blocks should not cross element boundaries');
-                        return;
+
                     }
                 }
             }
@@ -35743,7 +35730,6 @@ var Doctype = (function () {
         this.rootTag = rootTag;
         this.dtd = dtd;
     }
-    ;
     /**
      * @param {?} visitor
      * @return {?}
@@ -35782,7 +35768,6 @@ var Text$2 = (function () {
     function Text$2(unescapedValue) {
         this.value = _escapeXml(unescapedValue);
     }
-    ;
     /**
      * @param {?} visitor
      * @return {?}
@@ -40676,7 +40661,6 @@ var SummaryResolver = (function () {
      * @return {?}
      */
     SummaryResolver.prototype.isLibraryFile = function (fileName) { return false; };
-    ;
     /**
      * @param {?} fileName
      * @return {?}
@@ -40687,7 +40671,6 @@ var SummaryResolver = (function () {
      * @return {?}
      */
     SummaryResolver.prototype.resolveSummary = function (reference) { return null; };
-    ;
     /**
      * @param {?} filePath
      * @return {?}
@@ -41194,7 +41177,7 @@ var CompileMetadataResolver = (function () {
                 }
                 else {
                     _this._reportError(syntaxError("Unexpected value '" + stringifyType(importedType) + "' imported by the module '" + stringifyType(moduleType) + "'"), moduleType);
-                    return;
+
                 }
             });
         }
@@ -41236,7 +41219,7 @@ var CompileMetadataResolver = (function () {
                 }
                 else {
                     _this._reportError(syntaxError("Unexpected " + _this._getTypeDescriptor(declaredType) + " '" + stringifyType(declaredType) + "' declared by the module '" + stringifyType(moduleType) + "'. Please add a @Pipe/@Directive/@Component annotation."), moduleType);
-                    return;
+
                 }
             });
         }
@@ -46664,7 +46647,6 @@ var SafeSelector = (function () {
             return pseudo + replaceBy;
         });
     }
-    ;
     /**
      * @param {?} content
      * @return {?}
@@ -65031,7 +65013,6 @@ var RouterPreloader = (function () {
         var onEndLoad = function (r) { return router.triggerEvent(new RouteConfigLoadEnd(r)); };
         this.loader = new RouterConfigLoader(moduleLoader, compiler, onStartLoad, onEndLoad);
     }
-    ;
     /**
      * @return {?}
      */
@@ -67780,7 +67761,6 @@ function share() {
     return multicast_1.multicast.call(this, shareSubjectFactory).refCount();
 }
 exports.share = share;
-;
 //# sourceMappingURL=share.js.map
 
 /***/ }),
@@ -67862,7 +67842,6 @@ function tryCatch(fn) {
     return tryCatcher;
 }
 exports.tryCatch = tryCatch;
-;
 //# sourceMappingURL=tryCatch.js.map
 
 /***/ })

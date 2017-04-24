@@ -1,4 +1,4 @@
-package com.weblab.repository;
+package com.weblab.dal;
 
 import com.weblab.model.UserRequestsInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -43,9 +43,7 @@ public class SimpleUserRequestsInfoRepository implements UserRequestsInfoReposit
 
     @Override
     public boolean isBanned(Long vkId) {
-        if (redisTemplate.opsForValue().get(KEY_BANNED + vkId) == null)
-            return false;
-        else return true;
+        return redisTemplate.opsForValue().get(KEY_BANNED + vkId) != null;
     }
 
     @Override

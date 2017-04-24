@@ -5,8 +5,8 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.messages.Message;
 import com.weblab.exceptions.CommandSyntaxException;
 import com.weblab.exceptions.InstagramException;
-import com.weblab.handler.impl.InstagramHandler;
-import com.weblab.handler.impl.VkHandler;
+import com.weblab.handler.InstagramHandler;
+import com.weblab.handler.VkHandler;
 import com.weblab.service.basic.JsonParseService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -37,24 +37,18 @@ public class VkBot implements Source {
         Message message = parser.parseMessage(json);
         try {
 
-            if (Arrays.stream(instagramCommands).anyMatch((e) -> message.getBody().startsWith(e))) {
+            if (Arrays.stream(instagramCommands).anyMatch((command) -> message.getBody().toLowerCase().startsWith(command))) {
                 log.info("Handled by instagramHandler with message " + message.getBody());
                 instagramHandler.handle(json);
-            } else if (Arrays.stream(vkCommands).anyMatch((e) -> message.getBody().startsWith(e))) {
+            } else if (Arrays.stream(vkCommands).anyMatch((command) -> message.getBody().toLowerCase().startsWith(command))) {
                 log.info("Handled by vkHandler with message " + message.getBody());
                 vkHandler.handle(json);
             } else if (message.getBody().equals("help")) {
-                String help = "Instagram Commands:\n";
-                for (String command : instagramCommands)
-                    help = help + command + "\n";
-                help += "Vk Commands:\n";
-                for (String command : vkCommands)
-                    help = help + command + "\n";
-                vkHandler.getVkService().sendMessage(message, help);
+                vkHandler.getVkService().sendMessage(message, getHelpText());
             } else {
                 vkHandler.getVkService().sendMessage(message, "Command not found. Use \"help\" to get list of available commands");
             }
-        } catch (InstagramException|CommandSyntaxException e) {
+        } catch (InstagramException | CommandSyntaxException e) {
             log.error("Error while processing request ", e);
             e.setVkMessage(message);
             try {
@@ -75,5 +69,15 @@ public class VkBot implements Source {
         } catch (ApiException | ClientException e) {
             log.error("Can`t send message: {}", e);
         }
+    }
+
+    private String getHelpText() {
+        String help = "Instagram Commands:\n";
+        for (String command : instagramCommands)
+            help = help + command + "\n";
+        help += "Vk Commands:\n";
+        for (String command : vkCommands)
+            help = help + command + "\n";
+        return help;
     }
 }

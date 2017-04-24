@@ -8,20 +8,21 @@ import com.vk.api.sdk.objects.docs.responses.DocUploadResponse;
 import com.vk.api.sdk.objects.docs.responses.GetUploadServerResponse;
 import com.vk.api.sdk.objects.messages.Message;
 import com.weblab.configuration.vk.VkProvider;
+import com.weblab.dal.AccountDao;
 import com.weblab.service.basic.FileService;
 import com.weblab.service.basic.JsonParseService;
 import com.weblab.service.basic.PollyService;
-import com.weblab.service.dal.AccountDao;
 import com.weblab.vkapi.VkApiExtended;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.InputStreamBody;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -43,16 +44,12 @@ public class VkService {
     @Autowired
     JsonParseService parser;
     @Autowired
+    AccountDao dao;
+    @Autowired
     private VkProvider vkProvider;
     @Autowired
     private VkApiExtended vk;
-    @Autowired
-    AccountDao dao;
 
-    private String rawUrl() {
-        return "https://api.vk.com/method/docs.getUploadServer?access_token=" + vkProvider.getAccessToken() +
-                "&type=audio_message&v=5.62";
-    }
 
     public void sendMessage(Message message, String text) throws ClientException, ApiException {
         vk.messages()
@@ -81,20 +78,32 @@ public class VkService {
     }
 
     public void sendAudio(Message message) throws ClientException, ApiException {
+        String token = dao.getRandomAccessToken();
+        log.info("User acces token used to upload bot response: {}", token);
         RestTemplate restTemplate = new RestTemplate();
-        GetUploadServerResponse uploadResponse = parser.parseGetUploadResponse(restTemplate.getForEntity(rawUrl(), String.class).getBody());
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(uploadResponse.getUploadUrl());
-        MultipartEntity reqEntity = new MultipartEntity();
-        try {
-            reqEntity.addPart("file", new InputStreamBody(pollyService
-                    .synthesize(message.getBody().replaceFirst("say ", ""), OutputFormat.Mp3), fileService.generateAudioFileName(message.getUserId())));
+        GetUploadServerResponse uploadResponse = parser.parseGetUploadResponse(restTemplate.getForEntity(
+                "https://api.vk.com/method/docs.getUploadServer?access_token=" + token +
+                        "&type=audio_message&v=5.62", String.class).getBody());
 
-            httpPost.setEntity(reqEntity);
-            HttpResponse response = httpclient.execute(httpPost);
+        try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpPost uploadFile = new HttpPost(uploadResponse.getUploadUrl());
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.addBinaryBody(
+                    "file",
+                    pollyService
+                            .synthesize(message.getBody().replaceFirst("say ", ""), OutputFormat.Mp3),
+                    ContentType.MULTIPART_FORM_DATA,
+                    fileService.generateAudioFileName(message.getUserId())
+            );
+
+            HttpEntity multipart = builder.build();
+            uploadFile.setEntity(multipart);
+            CloseableHttpResponse response = httpClient.execute(uploadFile);
+            log.info("upload url: {}", uploadResponse.getUploadUrl());
             DocUploadResponse docUploadResponse = parser.parsePostUploadResponse(IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset()));
             ResponseEntity<String> rawDocs = restTemplate.getForEntity("https://api.vk.com/method/docs.save?file="
-                    + docUploadResponse.getFile() + "&access_token=" + vkProvider.getAccessToken() + "&v=5.60", String.class);
+                    + docUploadResponse.getFile() + "&access_token=" + token + "&v=5.60", String.class);
             Doc document = parser.parseDocs(rawDocs.getBody()).get(0);
             vk.messages().send(vkProvider.getServiceActor()).userId(message.getUserId())
                     .attachment("doc" + document.getOwnerId() + "_" + document.getId()).execute();

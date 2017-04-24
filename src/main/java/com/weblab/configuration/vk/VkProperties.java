@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 public class VkProperties {
     private Application application;
     private Group group;
-    private String redirect_url;
+    private String redirectUrl;
 
-    public String getRedirect_url() {
-        return redirect_url;
+    public String getRedirectUrl() {
+        return redirectUrl;
     }
 
-    public void setRedirect_url(String redirect_url) {
-        this.redirect_url = redirect_url;
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 
     public Application getApplication() {

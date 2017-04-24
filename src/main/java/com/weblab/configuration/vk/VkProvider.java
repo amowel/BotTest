@@ -1,23 +1,14 @@
 package com.weblab.configuration.vk;
 
 import com.vk.api.sdk.client.actors.ServiceActor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public final class VkProvider {
 
-    @Autowired
-    private VkAuthHandler vkAuthHandler;
+
     private String accessToken;
     private ServiceActor serviceActor;
-
-
-
-    public VkProvider(VkAuthHandler vkAuthHandler) {
-        this.vkAuthHandler = vkAuthHandler;
-    }
-
 
     public ServiceActor getServiceActor() {
         return serviceActor;

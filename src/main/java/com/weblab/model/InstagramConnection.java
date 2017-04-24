@@ -1,9 +1,7 @@
 package com.weblab.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
@@ -18,15 +16,14 @@ public class InstagramConnection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(mappedBy = "instagramConnection")
-    @JoinColumn(name = "account_id",insertable = false , updatable = false)
+    @OneToOne
     private Account account;
     @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
-    public InstagramConnection(String username, String password)
-    {
+
+    public InstagramConnection(String username, String password) {
         this.username = username;
         this.password = password;
     }

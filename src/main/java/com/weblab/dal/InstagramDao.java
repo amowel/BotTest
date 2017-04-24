@@ -1,7 +1,6 @@
-package com.weblab.service.dal;
+package com.weblab.dal;
 
 import com.weblab.model.InstagramConnection;
-import com.weblab.model.VkConnection;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Criteria;
@@ -23,6 +22,7 @@ import java.util.List;
 public class InstagramDao implements SocialDao<InstagramConnection> {
     @Autowired
     private SessionFactory sessionFactory;
+
     @Override
     public List<InstagramConnection> findAll() {
         return sessionFactory
@@ -43,14 +43,14 @@ public class InstagramDao implements SocialDao<InstagramConnection> {
     public InstagramConnection findById(String id) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(InstagramConnection.class);
         return (InstagramConnection) criteria
-                .add(Restrictions.eq("id",id))
+                .add(Restrictions.eq("id", id))
                 .uniqueResult();
     }
 
     @Override
     public InstagramConnection save(InstagramConnection connection) {
-         sessionFactory.getCurrentSession().saveOrUpdate(connection);
-         return connection;
+        sessionFactory.getCurrentSession().saveOrUpdate(connection);
+        return connection;
     }
 
     @Override
