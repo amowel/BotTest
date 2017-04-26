@@ -1,5 +1,5 @@
 # Bots Network
-Powerful platform that aimed to help everyone who is tired of the mess with various social networks and messengers. The main idea behind this project is to gather all the important functionality in one place and to use it from suitable for you tool. Now it's just a simple vk bot with couple of commands, but any of them have very complex realization under the hood.
+Powerful platform that aimed to help everyone who is tired of the mess with various social networks and messengers. The main idea behind this project is to gather all the important functionality in one place and to use it from suitable for you tool. Now it's just a simple vk bot with couple of commands, but any of them has very complex realization under the hood.
 
 `Say` command is generating speech (text-to-speach) from your message, `login` and `logout` are used to manage your instagram account, and finally `post` is used to post in your instagram account. Except this functionality project covers different tricky situations (posting without logining, login with wrong credentials and many else) and works correct.
 ### Live Demo
