@@ -233,7 +233,7 @@ var AddAccountsComponent = (function () {
         this.socials = this.service.getSocials();
     };
     AddAccountsComponent.prototype.socialClick = function (social) {
-        window.location.href = "https://oauth.vk.com/authorize?client_id=5901447&scope=ads,audio,docs,email,friends,groups,pages,wall,notes,notifications,notify,stats,status&redirect_uri=http://162.243.194.41/generatecode&display=page&response_type=code&v=5.62";
+        window.location.href = "https://oauth.vk.com/authorize?client_id=5901447&scope=ads,audio,docs,email,friends,groups,pages,wall,notes,notifications,offline,notify,stats,status&redirect_uri=http://162.243.194.41/generatecode&display=page&response_type=code&v=5.62";
     };
     return AddAccountsComponent;
 }());

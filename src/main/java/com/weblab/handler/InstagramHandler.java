@@ -41,9 +41,9 @@ public class InstagramHandler implements Handler {
 
         Message message = parser.parseMessage(json);
         try {
-            if (message.getBody().startsWith("login ")) {
+            if (message.getBody().toLowerCase().startsWith("login ")) {
                 String body = message.getBody();
-                String[] credentials = body.replace("login ", "").split(" ");
+                String[] credentials = body.replaceFirst("(?i)login ", "").split(" ");
                 if (credentials.length != 2)
                     throw new ArrayIndexOutOfBoundsException("login command should have only two parameters");
                 Account account = Account
@@ -55,10 +55,10 @@ public class InstagramHandler implements Handler {
                 instagramService.authorize(account);
                 log.info("User {} logged in instagram", credentials[0]);
                 vkBot.sendCallback(message, "You successfully logged in instagram");
-            } else if (message.getBody().startsWith("post ")) {
+            } else if (message.getBody().toLowerCase().startsWith("post ")) {
                 instagramService.post(message);
                 vkBot.sendCallback(message, "Post successfully created");
-            } else if (message.getBody().equals("logout")) {
+            } else if (message.getBody().toLowerCase().equals("logout")) {
                 instagramService.logout(message.getUserId());
                 vkBot.sendCallback(message, "You successfully logged out");
             } else {

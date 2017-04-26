@@ -50,7 +50,7 @@ public class MainController {
     public String status(@RequestParam(value = "code", required = true) String code,
                          ModelMap model, @RequestHeader HttpHeaders headers) throws IOException, JSONException {
         vkAuthHandler.authorize(code);
-        return "redirect:https://"+properties.getRedirectUrl();
+        return "redirect:/add-accounts";
     }
 
 

@@ -92,7 +92,7 @@ public class VkService {
             builder.addBinaryBody(
                     "file",
                     pollyService
-                            .synthesize(message.getBody().replaceFirst("say ", ""), OutputFormat.Mp3),
+                            .synthesize(message.getBody().replaceFirst("(?i)say ", ""), OutputFormat.Mp3),
                     ContentType.MULTIPART_FORM_DATA,
                     fileService.generateAudioFileName(message.getUserId())
             );

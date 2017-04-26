@@ -74,7 +74,7 @@ public class InstagramService {
             FileUtils.copyURLToFile(getUrlFromHighestQualityPhoto(photos.get(0)), file);
             instagram.sendRequest(new InstagramUploadPhotoRequest(
                     file,
-                    message.getBody().replace("post ", "")));
+                    message.getBody().replaceFirst("(?i)post ", "")));
         } catch (IllegalArgumentException e) {
             BadImageAspectRatio exception = new BadImageAspectRatio("Instagram allowed aspect ratio is from 0.8 to 1.91", e);
             exception.setFeedBackMessage("The photo you tried to post has not allowed by instagram proportions");
